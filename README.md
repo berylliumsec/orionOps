@@ -1,27 +1,23 @@
-# Project Title
+# PETUSAWO
 
 The purpose of the project is to remove clutter from vulnerability scans so that 
-penetration testers can focus on vulnerabilities that can be used to exploit a system 
-or application
+penetration testers can focus on severe vulnerabilities that can be easily used to
+exploit a system or application.
 
 ## Supported Open Source Applications
 - OWASP Zap
 - NMAP
-## Description
-
-An in-depth paragraph about your project and overview of use.
-
+  
 ## Getting Started
 
 ### Dependencies
 
 * Docker
 
-### Configuration files
+### Configuration 
 
-Both Zap and NMAP can be configured from the command line. The following are the configuration
+Both ZAP and NMAP can be configured from the command line. The following are the configuration
 options:
-
 
 - INCLUDE_NON_EXPLOIT : If this options is set to False, NMAP will not include a vulnerability that has not
   been exploited.
@@ -55,25 +51,3 @@ example:
 ```
 pyjsonviewer -f zap_results.json
 ```
-## Help
-
-Any advise for common problems or issues.
-```
-command to run if program contains helper info
-```
-
-## Authors
-
-Contributors names and contact info
-
-ex. Dominique Pizzie  
-ex. [@DomPizzie](https://twitter.com/dompizzie)
-
-## Version History
-
-* 0.2
-    * Various bug fixes and optimizations
-    * See [commit change]() or See [release history]()
-* 0.1
-    * Initial Release
-
