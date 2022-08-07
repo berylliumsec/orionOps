@@ -1,0 +1,17 @@
+repos:
+    - repo: local
+      hooks:
+          - id: check-isort
+            name: check-isort
+            entry: isort .
+            language: system
+            types: [bash]
+            pass_filename: false
+            always_run: true
+          - id: check-black
+            name: check-black
+            entry: black .
+            language: system
+            types: [bash]
+            pass_filename: false
+            always_run: true
