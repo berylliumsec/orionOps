@@ -32,17 +32,16 @@ options:
 To run zap against a url, run the following command, replacing the url with the target url.
 The results will be outputted to whatever directory you specify (in this case)
 ```
-docker run \
--v "$(pwd)":/RESULTS \
-berryliumsec/petusawo:latest zap_vuln_scan https://yourtarget.com --USE_CVSS_RISK -CVSS_SCORE_THRESHOLD 0
+docker run -v "$(pwd)":/RESULTS berryliumsec/petusawo:latest \
+zap_vuln_scan https://yourtarget.com/ --USE_CVSS_RISK --CVSS_SCORE_THRESHOLD=0
 ```
 
 Example of running NMAP's vulnerability scan against an IP address:
 
 ```
-docker run \
--v "$(pwd)":/RESULTS \
-        berryliumsec/petusawo:latest nmap_vuln_scan 000.00.000.000 --INCULDE_NON_EXPLOIT --CVSS_SCORE_THRESHOLD 0
+docker run -v "$(pwd)":/RESULTS berryliumsec/petusawo:latest \
+nmap_vuln_scan 000.00.000.000 \
+--INCULDE_NON_EXPLOIT --CVSS_SCORE_THRESHOLD=0
 ```
 ### Output Files
 Both Zap and NMAP generate a report file in JSON format. These files can be further processed by
