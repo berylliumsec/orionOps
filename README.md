@@ -42,7 +42,7 @@ Example of running NMAP's vulnerability scan against an IP address:
 ```
 docker run \
 -v "$(pwd)":/RESULTS \
-        berryliumsec/petusawo:latest nmap_vul_scan 000.00.000.000 --INCULDE_NON_EXPLOIT --CVSS_SCORE_THRESHOLD 0
+        berryliumsec/petusawo:latest nmap_vuln_scan 000.00.000.000 --INCULDE_NON_EXPLOIT --CVSS_SCORE_THRESHOLD 0
 ```
 ### Output Files
 Both Zap and NMAP generate a report file in JSON format. These files can be further processed by
