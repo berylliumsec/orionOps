@@ -28,8 +28,8 @@ RUN pip3 install \
 WORKDIR /
 RUN mkdir APP RESULTS
 WORKDIR /APP
-COPY entrypoint.sh nmap_vuln_scan zap_vuln_scan parse_nmap.py parse_zap.py config.py ./
-RUN chmod +x nmap_vuln_scan entrypoint.sh zap_vuln_scan 
+COPY entrypoint.sh parse_nmap.py parse_zap.py config.py ./
+RUN chmod +x entrypoint.sh 
 RUN echo "export PATH=$PATH:/APP" >> /root/.bashrc
 RUN cd /usr/share/nmap/scripts/ && \
     git clone https://github.com/vulnersCom/nmap-vulners.git && \
