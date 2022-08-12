@@ -1,5 +1,7 @@
 import logging
 
+import pytest
+
 from parse_nmap import nmap
 
 logging.basicConfig(level=logging.DEBUG)
@@ -16,4 +18,3 @@ nmap_instance.convert_xml_to_dict(
     NMAP_RAW_RESULTS_XML_TEST,
     NMAP_RAW_RESULTS_JSON_TEST,
 )
-nmap_instance.process_results(NMAP_RAW_RESULTS_JSON_TEST, NMAP_RESULTS)
