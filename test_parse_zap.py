@@ -1,4 +1,4 @@
-import parse_zap
+from parse_zap import zap
 
 TEXT = "#text"
 SELECTED_CONFIG = []
@@ -12,13 +12,13 @@ ZAP_PROCESSED_RESULTS = "test_results/zap_processed_results_test.json"
 elements = {"blah": "blah"}
 cves_list = ["blah", "blah"]
 
-zap_instance = parse_zap.zap()
+zap_instance = zap()
 zap_instance.process_results(ZAP_RAW_RESULTS, ZAP_PROCESSED_RESULTS)
 
 
 def test_extract_info_cve(mocker):
 
-    mocker.patch("parse_zap.zap.extract_info_cve", return_value=None)
+    mocker.patch("zap_instance.zap.extract_info_cve", return_value=None)
     zap_instance.extract_info_cve(elements, cves_list)
     zap_instance.extract_info_cve.assert_called_once_with(elements, cves_list)
 

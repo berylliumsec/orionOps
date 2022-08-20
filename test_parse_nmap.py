@@ -1,6 +1,5 @@
 import logging
 
-import pytest
 
 from parse_nmap import nmap
 
