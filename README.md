@@ -22,11 +22,13 @@ options:
 
 - INCLUDE_NON_EXPLOIT : If this options is set to False, NMAP will not include a vulnerability that has not
   been exploited.
-- CVSS_SCORE_THRESHOLD : The results will only contain vulnerabilities that thier CVSS score is greater than 
+- CVSS_SCORE_THRESHOLD : The results will only contain vulnerabilities that thier CVSS score is greater than
   this threshold.
 - USE_ZAP_RISK: This option allows you to use the native ZAP risk rating as a threshold instead of the CVSS SCORE
 - USE_CVSS_RISK: This option allows you to include the native ZAP risk rating instead of the CVSS SCORE
 - ZAP_RISK_CODE_THRESHOLD: If USE_ZAP_RISK is set to True, results will only contain vulnerabilities whose ZAP RISK CODE score is greater than this value.
+
+You should either use ZAP's risk score or CVSS's score, not both
 
 ### Executing the docker image
 
@@ -45,6 +47,24 @@ docker run -v "$(pwd)":/RESULTS berryliumsec/petusawo:latest \
 nmap_vuln_scan 000.00.000.000 \
 --INCLUDE_NON_EXPLOIT --CVSS_SCORE_THRESHOLD=0
 ```
+
+### Help
+
+To print out help files for both zap do:
+
+```bash
+docker run -v "$(pwd)":/RESULTS berryliumsec/petusawo:latest nmap_help
+```
+
+```bash
+docker run -v "$(pwd)":/RESULTS berryliumsec/petusawo:latest zap_help
+```
+
+If you are not getting any results from zap, consider using the CVSS risk
+score or the ZAP_RISK depending on which one isn't working.
+
+If you are not getting any results fom nmap, there were probably no vulnerabilities
+found based on the open ports.
 
 ### Output Files
 
