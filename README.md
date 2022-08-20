@@ -5,6 +5,7 @@ penetration testers can focus on severe vulnerabilities that can be easily used 
 exploit a system or application.
 
 ## Supported Open Source Applications
+
 - OWASP Zap
 - NMAP
   
@@ -12,9 +13,9 @@ exploit a system or application.
 
 ### Dependencies
 
-* Docker
+- Docker
 
-### Configuration 
+### Configuration
 
 Both ZAP and NMAP can be configured from the command line. The following are the configuration
 options:
@@ -31,22 +32,26 @@ options:
 
 To run zap against a url, run the following command, replacing the url with the target url.
 The results will be outputted to whatever directory you specify (in this case)
-```
+
+```bash
 docker run -v "$(pwd)":/RESULTS berryliumsec/petusawo:latest \
 zap_vuln_scan https://yourtarget.com/ --USE_CVSS_RISK --CVSS_SCORE_THRESHOLD=0
 ```
 
 Example of running NMAP's vulnerability scan against an IP address:
 
-```
+```bash
 docker run -v "$(pwd)":/RESULTS berryliumsec/petusawo:latest \
 nmap_vuln_scan 000.00.000.000 \
 --INCLUDE_NON_EXPLOIT --CVSS_SCORE_THRESHOLD=0
 ```
+
 ### Output Files
+
 Both Zap and NMAP generate a report file in JSON format. These files can be further processed by
 other applications. The python library pyjsonviewer can be used to quickly inspect results: For
 example:
-```
+
+```bash
 pyjsonviewer -f zap_results.json
 ```
