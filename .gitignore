@@ -4,3 +4,6 @@
 
 .jython_cache
 .pytest_cache
+trash
+*.json
+*xml
