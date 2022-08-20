@@ -22,6 +22,12 @@ elif [ "$1" = "parse_zap" ]; then
     python3 parse_zap.py "$2" "$3" &&
         jq . /RESULTS/zap_processed_results.json >/RESULTS/zap_processed_results_.json &&
         rm /RESULTS/zap_processed_results.json
+elif [ "$1" = "zap_help" ]; then
+    printf "printing zap help"
+    python3 parse_zap.py --help
+elif [ "$1" = "nmap_help" ]; then
+    printf "printing nmap help"
+    python3 parse_nmap.py --help
 else
     printf "unrecognized command"
 fi
