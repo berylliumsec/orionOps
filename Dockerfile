@@ -4,25 +4,22 @@ ENV DEBIAN_FRONTEND noninteractive
 # hadolint ignore=DL3008,DL3009
 
 RUN apt update -y && apt upgrade -y && apt-get autoremove -y && apt-get clean -y && apt-get -y install --no-install-recommends \
-    kali-tools-top10 \
+    nmap \
     zaproxy \ 
-    sqlite3 \
-    openvas \
     gnupg2 \
     pass \
-    ufw \ 
     python3-pip \
     openssh-client \
     jq \
-    docker.io \
-    expect-dev \
-    dirbuster \
-    python-tk 
+    python-tk \
+    git \
+    wget
 
 RUN pip3 install \
     pipenv \
     xmltodict \
-    PyJSONViewer  
+    PyJSONViewer \
+    requests
 
 
 WORKDIR /
