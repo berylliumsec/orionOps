@@ -4,6 +4,7 @@ import logging
 import re
 import sys
 
+import pandas as pd
 import requests
 
 import config
@@ -16,7 +17,7 @@ CVE_PATTERN = "\w\w\w-\d\d\d\d-\d\d\d\d\d"
 REQUESTS_SESSION = requests.Session()
 ZAP_RAW_RESULTS = "/RESULTS/zap_raw_results.json"
 ZAP_PROCESSED_RESULTS = "/RESULTS/zap_processed_results.json"
-
+ZAP_PROCESSED_RESULTS_CSV = "/RESULTS/zap_processed_results.csv"
 parser = argparse.ArgumentParser(description="Configure Zap")
 
 parser.add_argument(
@@ -145,7 +146,12 @@ class zap:
                 logging.error("unable to retrieve url")
                 raise
 
-    def process_results(self, zap_raw_results, zap_processed_results) -> None:
+    def process_results(
+        self,
+        zap_raw_results: json,
+        zap_processed_results: json,
+        zap_processed_results_csv: pd,
+    ) -> None:
         """Process the results"""
         logging.debug("processing results")
         f = open(zap_raw_results)
@@ -181,6 +187,8 @@ class zap:
         logging.info("printing results ..................")
         logging.info(self.results)
 
+        df = pd.DataFrame(self.results)
+        df.to_csv(zap_processed_results_csv)
         with open(zap_processed_results, "w") as json_file:
             json.dump(self.results, json_file)
 
@@ -189,4 +197,6 @@ if __name__ == "__main__":
     args = parser.parse_args()
     zap_instance = zap()
     zap_instance.load_config(args)
-    zap_instance.process_results(ZAP_RAW_RESULTS, ZAP_PROCESSED_RESULTS)
+    zap_instance.process_results(
+        ZAP_RAW_RESULTS, ZAP_PROCESSED_RESULTS, ZAP_PROCESSED_RESULTS_CSV
+    )

@@ -8,12 +8,14 @@ results = []
 results_cve = []
 ZAP_RAW_RESULTS = "test_results/zap_raw_results_test.json"
 ZAP_PROCESSED_RESULTS = "test_results/zap_processed_results_test.json"
-
+ZAP_PROCESSED_RESULTS_CSV = "test_results/zap_processed_results_test.csv"
 elements = {"blah": "blah"}
 cves_list = ["blah", "blah"]
 
 zap_instance = zap()
-zap_instance.process_results(ZAP_RAW_RESULTS, ZAP_PROCESSED_RESULTS)
+zap_instance.process_results(
+    ZAP_RAW_RESULTS, ZAP_PROCESSED_RESULTS, ZAP_PROCESSED_RESULTS_CSV
+)
 
 
 def test_extract_info_cve(mocker):

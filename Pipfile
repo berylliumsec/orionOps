@@ -12,6 +12,7 @@ pytest = "*"
 xmltodict = "*"
 pytest-mock = "*"
 requests = "*"
+pandas = "*"
 
 [requires]
 python_version = "3.10"

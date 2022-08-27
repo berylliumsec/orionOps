@@ -1,6 +1,5 @@
 import logging
 
-
 from parse_nmap import nmap
 
 logging.basicConfig(level=logging.DEBUG)
