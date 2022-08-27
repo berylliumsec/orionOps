@@ -19,7 +19,8 @@ RUN pip3 install \
     pipenv \
     xmltodict \
     PyJSONViewer \
-    requests
+    requests \
+    pandas
 
 
 WORKDIR /

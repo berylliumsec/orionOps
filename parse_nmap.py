@@ -2,8 +2,8 @@ import argparse
 import json
 import logging
 import sys
-from distutils.log import error
 
+import pandas as pd
 import xmltodict
 
 import config
@@ -34,7 +34,7 @@ SELECTED_CONFIG = []
 NMAP_RAW_RESULTS_XML = "nmap_raw_results.xml"
 NMAP_RAW_RESULTS_JSON = "nmap_raw_results.json"
 NMAP_RESULTS = "nmap_processed_results.json"
-
+NMAP_RESULTS_CSV = "nmap_processed_results.csv"
 
 KEY = "@key"
 
@@ -117,7 +117,9 @@ class nmap:
         if result["CVE"]:
             self.results.append(result)
 
-    def process_results(self, nmap_raw_results_json, nmap_results) -> None:
+    def process_results(
+        self, nmap_raw_results_json: json, nmap_results: json, nmap_results_csv: pd
+    ) -> None:
         """Process the results"""
 
         f = open(nmap_raw_results_json)
@@ -248,6 +250,8 @@ class nmap:
 
         logging.info("printing out results......................................")
         logging.info(self.results)
+        df = pd.DataFrame(self.results)
+        df.to_csv(nmap_results_csv)
         with open(nmap_results, "w") as json_file:
             json.dump(self.results, json_file)
 
@@ -257,4 +261,4 @@ if __name__ == "__main__":
     nmap_instance = nmap()
     nmap_instance.convert_xml_to_dict(NMAP_RAW_RESULTS_XML, NMAP_RAW_RESULTS_JSON)
     nmap_instance.load_config(args)
-    nmap_instance.process_results(NMAP_RAW_RESULTS_JSON, NMAP_RESULTS)
+    nmap_instance.process_results(NMAP_RAW_RESULTS_JSON, NMAP_RESULTS, NMAP_RESULTS_CSV)
