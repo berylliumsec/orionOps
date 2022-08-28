@@ -140,7 +140,6 @@ class zap:
                 url = "https://cve.circl.lu/api/cve/" + cve
                 req_results = REQUESTS_SESSION.get(url)
                 results_json = req_results.json()
-                logging.info(results_json.keys())
 
                 if int(results_json["cvss"]) > self.cvss_score_threshold:
                     logging.debug("cvss score is %s", results_json["cvss"])
@@ -152,8 +151,6 @@ class zap:
                         "INSTANCES": [],
                         "CVE ID": [],
                     }
-                    logging.info("printing individual results:")
-                    logging.info(result)
 
                     if len(results_json["capec"]) > 0:
                         logging.info("capec found")
@@ -167,8 +164,7 @@ class zap:
                     result["DESCRIPTION"].append(elements["desc"])
                     result["CVE ID"].append(results_json["id"])
                     result["CVSS SCORE"].append(results_json["cvss"])
-                    logging.info("printing individual results")
-                    logging.info(result)
+
                     if result["NAME"]:
                         self.results.append(result)
                         self.logger.info(
