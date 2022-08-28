@@ -39,10 +39,10 @@ parser.add_argument(
 logging.basicConfig(level=logging.DEBUG)
 TEXT = "#text"
 SELECTED_CONFIG = []
-NMAP_RAW_RESULTS_XML = "/RESULTS/nmap_raw_results.xml"
-NMAP_RAW_RESULTS_JSON = "/RESULTS/nmap_raw_results.json"
-NMAP_RESULTS = "/RESULTS/nmap_processed_results.json"
-NMAP_RESULTS_CSV = "/RESULTS/nmap_processed_results.csv"
+NMAP_RAW_RESULTS_XML = "nmap_raw_results.xml"
+NMAP_RAW_RESULTS_JSON = "nmap_raw_results.json"
+NMAP_RESULTS = "nmap_processed_results.json"
+NMAP_RESULTS_CSV = "nmap_processed_results.csv"
 
 KEY = "@key"
 
@@ -65,20 +65,10 @@ class nmap:
                 tags={"application": "nmap"},
                 version="1",
             )
-            self.handler = logging_loki.LokiHandler(
-                url=args.LOKI_URL,
-                tags={"application": "nmap"},
-                version="1",
-            )
             self.logger.addHandler(self.handler)
         else:
             self.cvss_score_threshold = args.CVSS_SCORE_THRESHOLD
             self.include_non_exploit = args.INCLUDE_NON_EXPLOIT
-            self.handler = logging_loki.LokiHandler(
-                url=args.LOKI_URL,
-                tags={"application": "nmap"},
-                version="1",
-            )
             self.handler = logging_loki.LokiHandler(
                 url=args.LOKI_URL,
                 tags={"application": "nmap"},
@@ -150,7 +140,7 @@ class nmap:
             result["CVE"].append(elements[cve][TEXT])
             result["TYPE"].append(elements[type_][TEXT])
             result["CVSS SCORE"].append(elements[cvss][TEXT])
-        logging.info(result)
+
         if result["CVE"]:
             self.results.append(result)
             self.logger.info(
@@ -171,128 +161,137 @@ class nmap:
         # 1 <elem key="cvss">7.5</elem>
         # 2 <elem key="type">cve</elem>
         # 3 <elem key="id">CVE-2022-31813</elem>
-        logging.info("loaded data")
-        for ports in data["nmaprun"]["host"]["ports"]["port"]:
-            logging.info("printing ports")
-            logging.info(ports)
-            for elements in ports:
-                if elements != "script":
-                    logging.info("did not find script exiting")
-                    sys.exit(1)
-                if elements == "script":
-                    logging.info("found script")
+        for item in data["nmaprun"]["host"]["ports"]["port"]:
+            if item == "script":
+                # print(type(data["nmaprun"]["host"]["ports"]["port"][item]))
+                if isinstance(data["nmaprun"]["host"]["ports"]["port"][item], list):
+                    # logging.debug("this is a list, handling like a list")
+                    for element in data["nmaprun"]["host"]["ports"]["port"][item]:
+                        if "table" in element:
+                            for table in element["table"]["table"]:
+                                # if vulnerabilities which have no exploits should be included
+                                i = 0
+                                while i < 4:
+                                    if table["elem"][i][KEY] == "is_exploit":
+                                        logging.debug("found exploit")
+                                        if (
+                                            self.include_non_exploit is False
+                                            and table["elem"][i][TEXT] == "true"
+                                        ):
+                                            logging.info(
+                                                "including vulnerabilities that have no exploits"
+                                            )
+                                            # Check if vulnerabilities pass the threshold set in the config file
+                                            print(
+                                                data["nmaprun"]["host"]["ports"][
+                                                    "port"
+                                                ][0]
+                                            )
+                                            self.extract_info_list(
+                                                table["elem"],
+                                                data["nmaprun"]["host"]["ports"][
+                                                    "port"
+                                                ][0],
+                                            )
 
-                    if isinstance(ports[elements], list):
-                        logging.debug("this is a list, handling like a list")
-                        for element in ports[elements]:
-                            if "table" in element:
-                                for table in element["table"]["table"]:
-                                    # if vulnerabilities which have no exploits should be included
-                                    i = 0
-                                    while i < 4:
-                                        if table["elem"][i][KEY] != "is_exploit":
-                                            logging.info("no vulnerabilities found")
-                                            sys.exit(1)
-                                        if table["elem"][i][KEY] == "is_exploit":
-                                            if (
-                                                self.include_non_exploit is False
-                                                and table["elem"][i][TEXT] == "true"
-                                            ):
-                                                logging.info(
-                                                    "including vulnerabilities that have no exploits"
-                                                )
-                                                # Check if vulnerabilities pass the threshold set in the config file
-                                                self.extract_info_list(
-                                                    table["elem"],
+                                        elif (
+                                            self.include_non_exploit is True
+                                            and table["elem"][i][TEXT] == "true"
+                                            or self.include_non_exploit is True
+                                            and table["elem"][i][TEXT] == "false"
+                                        ):
+                                            logging.info(
+                                                "excluding vulnerabilities that have no exploits"
+                                            )
+                                            # extract vulnerability data
+                                            print("madman")
+                                            print(
+                                                type(
                                                     data["nmaprun"]["host"]["ports"][
                                                         "port"
-                                                    ][0],
+                                                    ]
                                                 )
-
-                                            elif (
-                                                self.include_non_exploit is True
-                                                and table["elem"][i][TEXT] == "true"
-                                            ):
-                                                logging.info(
-                                                    "excluding vulnerabilities that have no exploits"
-                                                )
-                                                # extract vulnerability data
-                                                self.extract_info_list(
-                                                    table["elem"],
-                                                    data["nmaprun"]["host"]["ports"][
-                                                        "port"
-                                                    ][0],
-                                                )
-                                            else:
-                                                logging.info(
-                                                    "Could not determine whether to include vulnerabilities that have no exploits"
-                                                )
-                                                logging.info(
-                                                    "The value for INCLUDE_NON_EXPLOIT is %s",
-                                                    self.include_non_exploit,
-                                                )
-                                                logging.info(
-                                                    'The value for elements["elem"][3][TEXT] is %s',
-                                                    table["elem"][i][TEXT],
-                                                )
-                                            i += 1
+                                            )
+                                            print(
+                                                data["nmaprun"]["host"]["ports"][
+                                                    "port"
+                                                ].keys()
+                                            )
+                                            self.extract_info_list(
+                                                table["elem"],
+                                                data["nmaprun"]["host"]["ports"][
+                                                    "port"
+                                                ]["script"],
+                                            )
                                         else:
-                                            i += 1
-                    else:
-                        try:
-                            for elements in ports[elements]["table"]["table"]:
-                                if type(elements) is dict:
-                                    logging.info("type is dict, treating it as such")
-                                    # if vulnerabilities which have no exploits should be included
-                                    i = 0
-                                    while i < 4:
-                                        if elements["elem"][i][KEY] == "is_exploit":
-                                            if (
-                                                self.include_non_exploit is False
-                                                and elements["elem"][i][TEXT] == "true"
-                                            ):
-                                                logging.info(
-                                                    "including vulnerabilities that have no exploits"
-                                                )
-                                                self.extract_info_dict(
-                                                    elements["elem"],
-                                                    data["nmaprun"]["host"]["ports"][
-                                                        "port"
-                                                    ][0],
-                                                )
+                                            logging.info(
+                                                "Could not determine whether to include vulnerabilities that have no exploits"
+                                            )
+                                            logging.info(
+                                                "The value for INCLUDE_NON_EXPLOIT is %s",
+                                                self.include_non_exploit,
+                                            )
+                                            logging.info(
+                                                'The value for elements["elem"][3][TEXT] is %s',
+                                                table["elem"][i][TEXT],
+                                            )
+                                        i += 1
+                                    else:
+                                        i += 1
+                else:
+                    try:
+                        for element in data["nmaprun"]["host"]["ports"]["port"][item]:
+                            if type(element) is dict:
+                                logging.info("type is dict, treating it as such")
+                                # if vulnerabilities which have no exploits should be included
+                                i = 0
+                                while i < 4:
+                                    if element["elem"][i][KEY] == "is_exploit":
+                                        if (
+                                            self.include_non_exploit is False
+                                            and element["elem"][i][TEXT] == "true"
+                                        ):
+                                            logging.info(
+                                                "including vulnerabilities that have no exploits"
+                                            )
+                                            self.extract_info_dict(
+                                                element["elem"],
+                                                data["nmaprun"]["host"]["ports"][
+                                                    "port"
+                                                ][0],
+                                            )
 
-                                            elif (
-                                                self.include_non_exploit is True
-                                                and elements["elem"][i][TEXT] == "false"
-                                            ):
-                                                logging.info(
-                                                    "excluding vulnerabilities that have no exploits"
-                                                )
+                                        elif (
+                                            self.include_non_exploit is True
+                                            and element["elem"][i][TEXT] == "false"
+                                        ):
+                                            logging.info(
+                                                "excluding vulnerabilities that have no exploits"
+                                            )
 
-                                                self.extract_info_dict(
-                                                    elements["elem"],
-                                                    data["nmaprun"]["host"]["ports"][
-                                                        "port"
-                                                    ][0],
-                                                )
-                                            else:
-                                                logging.info(
-                                                    "Could not determine whether to include vulnerabilities that have no exploits"
-                                                )
-                                                logging.info(
-                                                    "The value for INCLUDE_NON_EXPLOIT is %s",
-                                                    self.include_non_exploit,
-                                                )
-                                                logging.info(
-                                                    'The value for elements["elem"][3][TEXT] is %s',
-                                                    elements["elem"][i][TEXT],
-                                                )
-                                            i += 1
+                                            self.extract_info_dict(
+                                                element["elem"],
+                                                data["nmaprun"]["host"]["ports"][
+                                                    "port"
+                                                ][0],
+                                            )
                                         else:
-                                            i += 1
-                        except TypeError:
-                            sys.exit(1)
-
+                                            logging.info(
+                                                "Could not determine whether to include vulnerabilities that have no exploits"
+                                            )
+                                            logging.info(
+                                                "The value for INCLUDE_NON_EXPLOIT is %s",
+                                                self.include_non_exploit,
+                                            )
+                                            logging.info(
+                                                'The value for elements["elem"][3][TEXT] is %s',
+                                                element["elem"][i][TEXT],
+                                            )
+                                        i += 1
+                                    else:
+                                        i += 1
+                    except TypeError:
+                        sys.exit(1)
         logging.info("printing out results......................................")
         logging.info(self.results)
 
