@@ -37,9 +37,10 @@ You should either use ZAP's risk score or CVSS's score, not both
 Grafana and Loki can be brought up using the following commands:
 
 ```bash
-docker compose -f grafana-loki-docker-comonse.yml up -d
+docker-compose -f grafana-loki-docker-compose.yml up -d
 ```
 
+You can access grafana at https://localhost:3100
 
 ### Executing the docker image
 
