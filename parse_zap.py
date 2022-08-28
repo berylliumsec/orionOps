@@ -3,7 +3,9 @@ import json
 import logging
 import re
 import sys
+from ast import arg
 
+import logging_loki
 import pandas as pd
 import requests
 
@@ -18,6 +20,8 @@ REQUESTS_SESSION = requests.Session()
 ZAP_RAW_RESULTS = "/RESULTS/zap_raw_results.json"
 ZAP_PROCESSED_RESULTS = "/RESULTS/zap_processed_results.json"
 ZAP_PROCESSED_RESULTS_CSV = "/RESULTS/zap_processed_results.csv"
+
+
 parser = argparse.ArgumentParser(description="Configure Zap")
 
 parser.add_argument(
@@ -46,6 +50,14 @@ parser.add_argument(
     help="ZAP risk score 0-9",
 )
 
+parser.add_argument(
+    "--LOKI_URL",
+    metavar="LOKI",
+    default="http://localhost:3100/loki/api/v1/push",
+    type=str,
+    help="LOKI's url E.G: http://192.168.1.1",
+)
+
 
 class zap:
     def __init__(self):
@@ -54,8 +66,9 @@ class zap:
         self.zap_risk_code_threshold = None
         self.cvss_score_threshold = None
         self.results = []
+        self.logger = logging.getLogger("zap-petusawo-logger")
 
-    def load_config(self, args):
+    def load_config(self, args: argparse):
         """Load Configuration"""
 
         logging.debug("loading args")
@@ -66,12 +79,26 @@ class zap:
             self.use_cvss_risk = config.USE_CVSS_RISK
             self.zap_risk_code_threshold = config.ZAP_RISK_CODE_THRESHOLD
             self.cvss_score_threshold = config.CVSS_SCORE_THRESHOLD
+            self.handler = logging_loki.LokiHandler(
+                url=args.LOKI_URL,
+                tags={"application": "zap"},
+                version="1",
+            )
+            self.logger.addHandler(self.handler)
+
         else:
             logging.debug("using args")
             logging.debug(args.USE_ZAP_RISK)
             logging.debug(args.USE_CVSS_RISK)
             logging.debug(args.ZAP_RISK_CODE_THRESHOLD)
-            logging.debug(args.ZAP_RISK_CODE_THRESHOLD)
+            logging.debug(args.LOKI_URL)
+            self.handler = logging_loki.LokiHandler(
+                url=args.LOKI_URL,
+                tags={"application": "zap"},
+                version="1",
+            )
+            self.logger.addHandler(self.handler)
+
             self.use_zap_risk = args.USE_ZAP_RISK
             self.use_cvss_risk = args.USE_CVSS_RISK
             self.zap_risk_code_threshold = args.ZAP_RISK_CODE_THRESHOLD
@@ -99,6 +126,10 @@ class zap:
         result["INSTANCES"].append(elements["instances"])
         if result["NAME"]:
             self.results.append(result)
+            self.logger.info(
+                result,
+                extra={"tags": {"service": "zap"}},
+            )
 
     def extract_info_cve(self, elements: dict, cves_list: list):
         """extract information from CVE results"""
@@ -140,6 +171,10 @@ class zap:
                     logging.info(result)
                     if result["NAME"]:
                         self.results.append(result)
+                        self.logger.info(
+                            result,
+                            extra={"tags": {"service": "zap"}},
+                        )
                 else:
                     logging.debug("cvss score is %s", results_json["cvss"])
             except:

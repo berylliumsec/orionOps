@@ -2,7 +2,9 @@ import argparse
 import json
 import logging
 import sys
+import xml
 
+import logging_loki
 import pandas as pd
 import xmltodict
 
@@ -13,7 +15,6 @@ parser = argparse.ArgumentParser(description="Configure Nmap")
 USE_ZAP_RISK = False
 USE_CVSS_RISK = True
 ZAP_RISK_CODE_THRESHOLD = 1
-
 
 parser.add_argument(
     "--CVSS_SCORE_THRESHOLD",
@@ -27,14 +28,21 @@ parser.add_argument(
     action=argparse.BooleanOptionalAction,
     help="Include non-exploitable vulns?. (True or False)",
 )
+parser.add_argument(
+    "--LOKI_URL",
+    metavar="LOKI",
+    type=str,
+    default="http://localhost:3100/loki/api/v1/push",
+    help="LOKI's url E.G: http://192.168.1.1",
+)
 
 logging.basicConfig(level=logging.DEBUG)
 TEXT = "#text"
 SELECTED_CONFIG = []
-NMAP_RAW_RESULTS_XML = "nmap_raw_results.xml"
-NMAP_RAW_RESULTS_JSON = "nmap_raw_results.json"
-NMAP_RESULTS = "nmap_processed_results.json"
-NMAP_RESULTS_CSV = "nmap_processed_results.csv"
+NMAP_RAW_RESULTS_XML = "/RESULTS/nmap_raw_results.xml"
+NMAP_RAW_RESULTS_JSON = "/RESULTS/nmap_raw_results.json"
+NMAP_RESULTS = "/RESULTS/nmap_processed_results.json"
+NMAP_RESULTS_CSV = "/RESULTS/nmap_processed_results.csv"
 
 KEY = "@key"
 
@@ -44,21 +52,46 @@ class nmap:
         self.cvss_score_threshold = None
         self.include_non_exploit = None
         self.results = []
+        self.logger = logging.getLogger("nmap-petusawo-logger")
 
-    def load_config(self, args):
+    def load_config(self, args: argparse):
         """Load Configuration"""
 
         if len(sys.argv) < 1:
             self.cvss_score_threshold = config.CVSS_SCORE_THRESHOLD
             self.include_non_exploit = config.INCLUDE_NON_EXPLOIT
+            self.handler = logging_loki.LokiHandler(
+                url="http://localhost:3100/loki/api/v1/push",
+                tags={"application": "nmap"},
+                version="1",
+            )
+            self.handler = logging_loki.LokiHandler(
+                url=args.LOKI_URL,
+                tags={"application": "nmap"},
+                version="1",
+            )
+            self.logger.addHandler(self.handler)
         else:
             self.cvss_score_threshold = args.CVSS_SCORE_THRESHOLD
             self.include_non_exploit = args.INCLUDE_NON_EXPLOIT
+            self.handler = logging_loki.LokiHandler(
+                url=args.LOKI_URL,
+                tags={"application": "nmap"},
+                version="1",
+            )
+            self.handler = logging_loki.LokiHandler(
+                url=args.LOKI_URL,
+                tags={"application": "nmap"},
+                version="1",
+            )
+            self.logger.addHandler(self.handler)
         logging.info("outputting configs: ")
         logging.info("self.cvss_score_threshold %s", self.cvss_score_threshold)
         logging.info("self.cvss_score_threshold %s", self.cvss_score_threshold)
 
-    def convert_xml_to_dict(self, nmap_raw_results_xml, nmap_raw_results_json):
+    def convert_xml_to_dict(
+        self, nmap_raw_results_xml: xml, nmap_raw_results_json: json
+    ):
         """Convert nmap xml to JSON"""
         try:
             with open(nmap_raw_results_xml) as xml_file:
@@ -93,6 +126,10 @@ class nmap:
             result["CVSS SCORE"].append(elements[cvss][TEXT])
             if result["CVE"]:
                 self.results.append(result)
+                self.logger.info(
+                    result,
+                    extra={"tags": {"service": "nmap"}},
+                )
 
     def extract_info_dict(self, elements: dict, port_info: dict):
         """Extract Important Info"""
@@ -116,6 +153,10 @@ class nmap:
         logging.info(result)
         if result["CVE"]:
             self.results.append(result)
+            self.logger.info(
+                result,
+                extra={"tags": {"service": "nmap"}},
+            )
 
     def process_results(
         self, nmap_raw_results_json: json, nmap_results: json, nmap_results_csv: pd
@@ -135,7 +176,11 @@ class nmap:
             logging.info("printing ports")
             logging.info(ports)
             for elements in ports:
+                if elements != "script":
+                    logging.info("did not find script exiting")
+                    sys.exit(1)
                 if elements == "script":
+                    logging.info("found script")
 
                     if isinstance(ports[elements], list):
                         logging.debug("this is a list, handling like a list")
@@ -250,6 +295,7 @@ class nmap:
 
         logging.info("printing out results......................................")
         logging.info(self.results)
+
         df = pd.DataFrame(self.results)
         df.to_csv(nmap_results_csv)
         with open(nmap_results, "w") as json_file:
