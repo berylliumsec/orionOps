@@ -3,6 +3,7 @@ import json
 import logging
 import sys
 
+import logging_loki
 import pandas as pd
 import xmltodict
 
@@ -14,7 +15,14 @@ USE_ZAP_RISK = False
 USE_CVSS_RISK = True
 ZAP_RISK_CODE_THRESHOLD = 1
 
+handler = logging_loki.LokiHandler(
+    url="http://localhost:3100/loki/api/v1/push",
+    tags={"application": "nmap"},
+    version="1",
+)
 
+logger = logging.getLogger("my-logger")
+logger.addHandler(handler)
 parser.add_argument(
     "--CVSS_SCORE_THRESHOLD",
     type=int,
@@ -250,6 +258,10 @@ class nmap:
 
         logging.info("printing out results......................................")
         logging.info(self.results)
+        logger.info(
+            self.results,
+            extra={"tags": {"service": "nmap"}},
+        )
         df = pd.DataFrame(self.results)
         df.to_csv(nmap_results_csv)
         with open(nmap_results, "w") as json_file:

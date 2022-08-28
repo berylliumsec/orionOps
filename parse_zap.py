@@ -4,10 +4,20 @@ import logging
 import re
 import sys
 
+import logging_loki
 import pandas as pd
 import requests
 
 import config
+
+handler = logging_loki.LokiHandler(
+    url="http://localhost:3100/loki/api/v1/push",
+    tags={"application": "zap"},
+    version="1",
+)
+
+logger = logging.getLogger("my-logger")
+logger.addHandler(handler)
 
 logging.basicConfig(level=logging.DEBUG)
 TEXT = "#text"
@@ -18,6 +28,8 @@ REQUESTS_SESSION = requests.Session()
 ZAP_RAW_RESULTS = "/RESULTS/zap_raw_results.json"
 ZAP_PROCESSED_RESULTS = "/RESULTS/zap_processed_results.json"
 ZAP_PROCESSED_RESULTS_CSV = "/RESULTS/zap_processed_results.csv"
+
+
 parser = argparse.ArgumentParser(description="Configure Zap")
 
 parser.add_argument(
@@ -186,6 +198,10 @@ class zap:
             i += 1
         logging.info("printing results ..................")
         logging.info(self.results)
+        logger.info(
+            self.results,
+            extra={"tags": {"service": "zap"}},
+        )
 
         df = pd.DataFrame(self.results)
         df.to_csv(zap_processed_results_csv)

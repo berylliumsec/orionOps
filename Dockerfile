@@ -20,7 +20,8 @@ RUN pip3 install \
     xmltodict \
     PyJSONViewer \
     requests \
-    pandas
+    pandas \
+    python-logging-loki
 
 
 WORKDIR /
