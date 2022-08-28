@@ -1,8 +1,9 @@
 # PETUSAWO
 
-The purpose of the project is to remove clutter from vulnerability scans so that 
-penetration testers can focus on severe vulnerabilities that can be easily used to
-exploit a system or application.
+The purpose of the project is to:
+- Remove clutter from vulnerability scans
+- Track a target's vulnerability over time using grafana dashboards
+  
 
 ## Supported Open Source Applications
 
@@ -27,8 +28,18 @@ options:
 - USE_ZAP_RISK: This option allows you to use the native ZAP risk rating as a threshold instead of the CVSS SCORE
 - USE_CVSS_RISK: This option allows you to include the native ZAP risk rating instead of the CVSS SCORE
 - ZAP_RISK_CODE_THRESHOLD: If USE_ZAP_RISK is set to True, results will only contain vulnerabilities whose ZAP RISK CODE score is greater than this value.
+- LOK_URL: The url of the loki instance to push logs to
 
 You should either use ZAP's risk score or CVSS's score, not both
+
+## Starting Grafana and Loki
+
+Grafana and Loki can be brought up using the following commands:
+
+```bash
+docker compose -f grafana-loki-docker-comonse.yml up -d
+```
+
 
 ### Executing the docker image
 
@@ -37,7 +48,7 @@ The results will be outputted to whatever directory you specify (in this case)
 
 ```bash
 docker run -v "$(pwd)":/RESULTS berryliumsec/petusawo:latest \
-zap_vuln_scan https://yourtarget.com/ --USE_CVSS_RISK --CVSS_SCORE_THRESHOLD=0
+zap_vuln_scan https://yourtarget.com/ --USE_CVSS_RISK --CVSS_SCORE_THRESHOLD=0 --LOKI_URL="http://localhost:3100/loki/api/v1/push"
 ```
 
 Example of running NMAP's vulnerability scan against an IP address:
@@ -45,7 +56,7 @@ Example of running NMAP's vulnerability scan against an IP address:
 ```bash
 docker run -v "$(pwd)":/RESULTS berryliumsec/petusawo:latest \
 nmap_vuln_scan 000.00.000.000 \
---INCLUDE_NON_EXPLOIT --CVSS_SCORE_THRESHOLD=0
+--INCLUDE_NON_EXPLOIT --CVSS_SCORE_THRESHOLD=0 --LOKI_URL="http://localhost:3100/loki/api/v1/push"
 ```
 
 ### Help
