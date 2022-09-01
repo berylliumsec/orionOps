@@ -39,10 +39,10 @@ parser.add_argument(
 logging.basicConfig(level=logging.DEBUG)
 TEXT = "#text"
 SELECTED_CONFIG = []
-NMAP_RAW_RESULTS_XML = "nmap_raw_results.xml"
-NMAP_RAW_RESULTS_JSON = "nmap_raw_results.json"
-NMAP_RESULTS = "nmap_processed_results.json"
-NMAP_RESULTS_CSV = "nmap_processed_results.csv"
+NMAP_RAW_RESULTS_XML = "/RESULTS/nmap_raw_results.xml"
+NMAP_RAW_RESULTS_JSON = "/RESULTS/nmap_raw_results.json"
+NMAP_RESULTS = "/RESULTS/nmap_processed_results.json"
+NMAP_RESULTS_CSV = "/RESULTS/nmap_processed_results.csv"
 
 KEY = "@key"
 
