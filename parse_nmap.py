@@ -97,8 +97,8 @@ class nmap:
 
     def extract_info_list(self, elements: list, port_info: dict):
         """Extract Important Info"""
-        result = {"CVE": [], "TYPE": [], "CVSS SCORE": [], "PORT INFO": []}
-        result["PORT INFO"].append(port_info)
+        result = {"CVE": [], "TYPE": [], "CVSS SCORE": []}
+
         i = 0
         while i < 4:
 
@@ -123,7 +123,7 @@ class nmap:
 
     def extract_info_dict(self, elements: dict, port_info: dict):
         """Extract Important Info"""
-        result = {"CVE": [], "TYPE": [], "CVSS SCORE": [], "PORT INFO": []}
+        result = {"CVE": [], "TYPE": [], "CVSS SCORE": []}
         result["PORT INFO"].append(port_info)
         i = 0
         while i < 4:

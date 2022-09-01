@@ -117,12 +117,10 @@ class zap:
         result = {
             "NAME": [],
             "RISKCODE": [],
-            "DESCRIPTION": [],
             "INSTANCES": [],
         }
         result["NAME"].append(elements["name"])
         result["RISKCODE"].append(elements["riskcode"])
-        result["DESCRIPTION"].append(elements["desc"])
         result["INSTANCES"].append(elements["instances"])
         if result["NAME"]:
             self.results.append(result)
@@ -146,7 +144,6 @@ class zap:
                     result = {
                         "NAME": [],
                         "PREREQUISITES": [],
-                        "DESCRIPTION": [],
                         "CVSS SCORE": [],
                         "INSTANCES": [],
                         "CVE ID": [],
@@ -161,7 +158,6 @@ class zap:
                     else:
                         logging.info("capec not found")
                     result["INSTANCES"].append(elements["instances"])
-                    result["DESCRIPTION"].append(elements["desc"])
                     result["CVE ID"].append(results_json["id"])
                     result["CVSS SCORE"].append(results_json["cvss"])
 
