@@ -17,11 +17,9 @@ The purpose of the project is to:
 
 ### Configuration
 
-Both ZAP can be configured from the command line. The following are the configuration
+ZAP can be configured from the command line. The following are the configuration
 options:
 
-- INCLUDE_NON_EXPLOIT : If this options is set to False, NMAP will not include a vulnerability that has not
-  been exploited.
 - CVSS_SCORE_THRESHOLD : The results will only contain vulnerabilities that thier CVSS score is greater than
   this threshold.
 - USE_ZAP_RISK: This option allows you to use the native ZAP risk rating as a threshold instead of the CVSS SCORE
@@ -29,7 +27,7 @@ options:
 - ZAP_RISK_CODE_THRESHOLD: If USE_ZAP_RISK is set to True, results will only contain vulnerabilities whose ZAP RISK CODE score is greater than this value.
 - LOK_URL: The url of the loki instance to push logs to
 
-You should either use ZAP's risk score or CVSS's score, not both
+You should either use ZAP's risk score or CVSS's score, not both.
 
 ## Starting Grafana and Loki
 
