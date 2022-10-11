@@ -42,7 +42,7 @@ You can access grafana at https://localhost:3100
 ### Executing the docker image
 
 To run zap against a url, run the following command, replacing the url with the target url.
-The results will be outputted to whatever directory you specify (in this case)
+The results will be outputted to whatever directory you specify.
 
 ```bash
 docker run -v "$(pwd)":/RESULTS berryliumsec/petusawo:latest \
