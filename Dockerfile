@@ -15,7 +15,7 @@ RUN apt update -y && apt upgrade -y && apt-get autoremove -y && apt-get clean -y
     git \
     wget
 
-RUN pip3 install \
+RUN pip3 install --no-cache-dir \
     pipenv \
     xmltodict \
     PyJSONViewer \
@@ -27,10 +27,6 @@ RUN pip3 install \
 WORKDIR /
 RUN mkdir APP RESULTS
 WORKDIR /APP
-COPY entrypoint.sh parse_nmap.py parse_zap.py config.py ./
-RUN chmod +x entrypoint.sh 
-RUN echo "export PATH=$PATH:/APP" >> /root/.bashrc
-RUN cd /usr/share/nmap/scripts/ && \
-    git clone https://github.com/vulnersCom/nmap-vulners.git && \
-    wget https://raw.githubusercontent.com/daviddias/node-dirbuster/master/lists/directory-list-2.3-medium.txt
+COPY entrypoint.sh parse_zap.py config.py ./
+RUN chmod +x entrypoint.sh && echo "export PATH=$PATH:/APP" >> /root/.bashrc
 ENTRYPOINT [ "bash", "entrypoint.sh" ]
