@@ -139,8 +139,14 @@ class zap:
                 req_results = REQUESTS_SESSION.get(url)
                 results_json = req_results.json()
 
-                if int(results_json["cvss"]) > self.cvss_score_threshold:
-                    logging.debug("cvss score is %s", results_json["cvss"])
+                if int(results_json["cvss"]) < self.cvss_score_threshold:
+                    logging.debug(
+                        "cvss score %s is less than threshold", results_json["cvss"]
+                    )
+                else:
+                    logging.debug(
+                        "cvss score %s is above the threshold", results_json["cvss"]
+                    )
                     result = {
                         "NAME": [],
                         "PREREQUISITES": [],
@@ -149,26 +155,28 @@ class zap:
                         "CVE ID": [],
                     }
 
-                    if len(results_json["capec"]) > 0:
+                    if len(results_json["capec"]):
+                        logging.info("capec not found")
+
+                    else:
                         logging.info("capec found")
                         result["NAME"].append(results_json["capec"][0]["name"])
                         result["PREREQUISITES"].append(
                             results_json["capec"][0]["prerequisites"]
                         )
-                    else:
-                        logging.info("capec not found")
+
                     result["INSTANCES"].append(elements["instances"])
                     result["CVE ID"].append(results_json["id"])
                     result["CVSS SCORE"].append(results_json["cvss"])
 
+                    # Check to make sure there are results
                     if result["NAME"]:
                         self.results.append(result)
                         self.logger.info(
                             result,
                             extra={"tags": {"service": "zap"}},
                         )
-                else:
-                    logging.debug("cvss score is %s", results_json["cvss"])
+
             except:
                 logging.error("unable to retrieve url")
                 raise
