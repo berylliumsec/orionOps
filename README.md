@@ -49,11 +49,9 @@ docker run -v "$(pwd)":/RESULTS berryliumsec/petusawo:latest \
 zap_vuln_scan https://yourtarget.com/ --USE_CVSS_RISK --CVSS_SCORE_THRESHOLD=0 --LOKI_URL="http://localhost:3100/loki/api/v1/push"
 ```
 
-
-
 ### Help
 
-To print out help files for zap do:
+To print out help for zap do:
 
 ```bash
 docker run -v "$(pwd)":/RESULTS berryliumsec/petusawo:latest zap_help
