@@ -27,7 +27,7 @@ options:
 - ZAP_RISK_CODE_THRESHOLD: If USE_ZAP_RISK is set to True, results will only contain vulnerabilities whose ZAP RISK CODE score is greater than this value.
 - LOK_URL: The url of the loki instance to push logs to
 
-You should either use ZAP's risk score or CVSS's score, not both.
+You should either use ZAP's risk score or CVSS score, not both.
 
 ## Starting Grafana and Loki
 
