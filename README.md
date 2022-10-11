@@ -8,7 +8,6 @@ The purpose of the project is to:
 ## Supported Open Source Applications
 
 - OWASP Zap
-- NMAP
   
 ## Getting Started
 
@@ -18,11 +17,9 @@ The purpose of the project is to:
 
 ### Configuration
 
-Both ZAP and NMAP can be configured from the command line. The following are the configuration
+ZAP can be configured from the command line. The following are the configuration
 options:
 
-- INCLUDE_NON_EXPLOIT : If this options is set to False, NMAP will not include a vulnerability that has not
-  been exploited.
 - CVSS_SCORE_THRESHOLD : The results will only contain vulnerabilities that thier CVSS score is greater than
   this threshold.
 - USE_ZAP_RISK: This option allows you to use the native ZAP risk rating as a threshold instead of the CVSS SCORE
@@ -30,7 +27,7 @@ options:
 - ZAP_RISK_CODE_THRESHOLD: If USE_ZAP_RISK is set to True, results will only contain vulnerabilities whose ZAP RISK CODE score is greater than this value.
 - LOK_URL: The url of the loki instance to push logs to
 
-You should either use ZAP's risk score or CVSS's score, not both
+You should either use ZAP's risk score or CVSS score, not both.
 
 ## Starting Grafana and Loki
 
@@ -45,28 +42,16 @@ You can access grafana at https://localhost:3100
 ### Executing the docker image
 
 To run zap against a url, run the following command, replacing the url with the target url.
-The results will be outputted to whatever directory you specify (in this case)
+The results will be outputted to whatever directory you specify.
 
 ```bash
 docker run -v "$(pwd)":/RESULTS berryliumsec/petusawo:latest \
 zap_vuln_scan https://yourtarget.com/ --USE_CVSS_RISK --CVSS_SCORE_THRESHOLD=0 --LOKI_URL="http://localhost:3100/loki/api/v1/push"
 ```
 
-Example of running NMAP's vulnerability scan against an IP address:
-
-```bash
-docker run -v "$(pwd)":/RESULTS berryliumsec/petusawo:latest \
-nmap_vuln_scan 000.00.000.000 \
---INCLUDE_NON_EXPLOIT --CVSS_SCORE_THRESHOLD=0 --LOKI_URL="http://localhost:3100/loki/api/v1/push"
-```
-
 ### Help
 
-To print out help files for both zap do:
-
-```bash
-docker run -v "$(pwd)":/RESULTS berryliumsec/petusawo:latest nmap_help
-```
+To print out help for zap do:
 
 ```bash
 docker run -v "$(pwd)":/RESULTS berryliumsec/petusawo:latest zap_help
@@ -75,12 +60,10 @@ docker run -v "$(pwd)":/RESULTS berryliumsec/petusawo:latest zap_help
 If you are not getting any results from zap, consider using the CVSS risk
 score or the ZAP_RISK depending on which one isn't working.
 
-If you are not getting any results fom nmap, there were probably no vulnerabilities
-found based on the open ports.
 
 ### Output Files
 
-Both Zap and NMAP generate a report file in JSON format. These files can be further processed by
+Zap generates a report file in JSON format. These files can be further processed by
 other applications. The python library pyjsonviewer can be used to quickly inspect results: For
 example:
 
