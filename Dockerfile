@@ -11,7 +11,8 @@ RUN apt update -y && apt upgrade -y && apt-get autoremove -y && apt-get clean -y
     python3-pip \
     openssh-client \
     git \
-    wget
+    wget \
+    jq
 
 
 
