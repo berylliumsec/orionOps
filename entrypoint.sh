@@ -13,7 +13,7 @@ elif [ "$1" = "nmap_vuln_scan_list" ]; then
     while read -r ip
     do
         nmap -sV --script nmap-vulners/ "$ip" >> /RESULTS/nmap_raw_results
-    done < ips.txt
+    done < /RESULTS/ips.txt
 
 else
     printf "unrecognized command"
