@@ -30,6 +30,14 @@ docker run -v "$(pwd)":/RESULTS berryliumsec/petusawo:latest \
 zap_vuln_scan https://yourtarget.com/
 ```
 
+To run Zap against a list of URLs, place the urls in file named urls in the PWD with each url
+on a new line (the last line must be terminated with a new line). Run:
+
+```bash
+docker run -v "$(pwd)":/RESULTS berryliumsec/petusawo:latest \
+zap_vuln_scan_list
+```
+
 Example of running NMAP's vulnerability scan against an IP address:
 
 ```bash
@@ -38,7 +46,8 @@ nmap_vuln_scan 000.00.000.000
 ```
 
 To run NMAP's vulnerability scan against a list of ip addresses, place
-the list in a file named ips.txt with each IP address on a new line.
+the list in a file named ips.txt in the PWD with each IP address on a new line
+(the last line must be terminated with a new line).
 Run:
 
 ```bash
