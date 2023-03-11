@@ -30,7 +30,7 @@ docker run -v "$(pwd)":/RESULTS berryliumsec/petusawo:latest \
 zap_vuln_scan https://yourtarget.com/
 ```
 
-To run Zap against a list of URLs, place the urls in file named urls in the PWD with each url
+To run Zap against a list of URLs, place the urls in file named urls.txt in the PWD with each url
 on a new line (the last line must be terminated with a new line). Run:
 
 ```bash
@@ -60,4 +60,4 @@ nmap_vuln_scan_list
 Zap generates a report file in JSON format. These files can be further processed by
 other applications.
 
-Nmap results are stored in regular txt file
+Nmap results are stored in a regular txt file
