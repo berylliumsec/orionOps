@@ -1,3 +1,0 @@
-http://192.168.1.156
-https://www.berylliumsec.com
-http://192.168.1.1
