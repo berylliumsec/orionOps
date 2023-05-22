@@ -59,6 +59,9 @@ if [ "$1" = "zap_vuln_scan" ]; then
     
     elif [ "$1" = "test_unauthenticated_iscsi_sessions" ]; then
     /scripts/bash/test_unauthenticated_iscsi_sessions.sh "$2" "$3"
+
+    elif [ "$1" = "resolve_fqdn" ]; then
+    /scripts/bash/resolve_fqdn.sh "$2"
     
     elif [ "$1" = "help" ]; then
     printf "\n"

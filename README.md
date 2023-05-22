@@ -100,6 +100,15 @@ list_iscsi_targets target_ip_address_or_list_of_target_ips
 docker run -v "$(pwd)":/RESULTS berryliumsec/petusawo:latest \
 test_unauthenticated_iscsi_sessions target_ip_address_or_list_of_target_ips iscsi_target
 ```
+
+### Utilities
+
+Resolve IPs to FQDNS
+
+```bash
+docker run -v "$(pwd)":/RESULTS berryliumsec/petusawo:latest \
+resolve_fqdn target_ip_address_or_list_of_target_ips 
+```
 ### Output Files
 
 All log files will be placed in the directory from which you run the docker container.

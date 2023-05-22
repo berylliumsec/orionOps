@@ -14,7 +14,7 @@ WORKDIR /APP
 COPY entrypoint.sh ./
 COPY /scripts/ /scripts
 RUN chmod +x entrypoint.sh && echo "export PATH=$PATH:/APP" >> /root/.bashrc
-RUN chmod +x /scripts/*
+RUN chmod +x /scripts/bash/*
 RUN cd /usr/share/nmap/scripts/ && \
     git clone https://github.com/vulnersCom/nmap-vulners.git && \
     wget https://raw.githubusercontent.com/daviddias/node-dirbuster/master/lists/directory-list-2.3-medium.txt
