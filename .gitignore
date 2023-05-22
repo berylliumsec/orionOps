@@ -1,0 +1,12 @@
+.vscode
+*.pyc*
+.coverage
+
+.jython_cache
+.pytest_cache
+trash
+*.json
+*xml
+trash1
+tester.py
+*.csv
