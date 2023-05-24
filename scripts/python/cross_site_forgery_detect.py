@@ -1,7 +1,8 @@
 import argparse
 import logging
+import sys
+
 import requests
-import argparse
 
 logging.basicConfig(filename="/RESULTS/csrf.log", level=logging.DEBUG)
 
@@ -52,5 +53,9 @@ if __name__ == "__main__":
     )
     args = parser.parse_args()
     url = args.url
-
+    if not args.url:
+        logging.debug("No URL supplied, exiting")
+        sys.exit(1)
+    else:
+        logging.debug("Checking URL %s", args.url)
     detect_csrf(url)

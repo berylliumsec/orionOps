@@ -26,6 +26,18 @@ docker-compose build
 
 ### Executing the docker image
 
+### Before getting started
+
+Throughout this repository, we refer to "list_of_ips". To pass a list of IPs to any command,
+create a text file in the directory from which the docker command will be run. Ensure that
+you list one IP per line in the textfile, for example.
+
+```
+198.1.2.220
+198.1.3.221
+```
+
+The you can pass the file name as command line arguement to the tool.
 ### ZAP
 
 To run zap against a url, run the following command, replacing the url with the target url.
@@ -80,6 +92,34 @@ docker run -v "$(pwd)":/RESULTS berryliumsec/petusawo:latest \
 check_if_smb_is_required target_ip_address_or_list_of_ips
 ```
 
+### Check for IPV6 traffic
+
+```bash
+screen -S tshark -d -m docker run --network host -v -it "$(pwd)":/RESULTS berryliumsec/petusawo:latest \
+check_for_ipv6_traffic network_interface to listen on
+```
+### Exploit SMB signing not required via DNS6 poisioning and NTLM relay.
+
+```bash
+screen -S mitm6 -d -m  docker run -it --network host -v "$(pwd)":/RESULTS berryliumsec/petusawo:latest \
+start_mitm6 target_domain_name local_network_interface
+```
+
+You can interact with the above screen with the command:
+```
+screen -r mitm6
+```
+
+```bash
+screen -S ipv6_relay -d -m  docker run -it --network host -v "$(pwd)":/RESULTS berryliumsec/petusawo:latest \
+start_nltm_relay_ipv6 target_ip_address_or_list_of_ips
+```
+
+You can interact with the above screen with the command:
+
+```
+screen -r ipv6_relay
+```
 ### Checking for and exploit null SMB Sessions
 
 ```bash

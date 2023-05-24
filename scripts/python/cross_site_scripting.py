@@ -1,7 +1,8 @@
+import argparse
 import logging
 import sys
+
 import requests
-import argparse
 
 logging.basicConfig(level=logging.INFO)
 parser = argparse.ArgumentParser(description="Configure proxy")
@@ -17,6 +18,11 @@ parser.add_argument(
 )
 args = parser.parse_args()
 logging.basicConfig(filename="/RESULTS/xss.log", level=logging.DEBUG)
+if not args.url:
+    logging.debug("No URL supplied, exiting")
+    sys.exit(1)
+else:
+    logging.debug("Checking URL %s", args.url)
 URL = args.url
 
 # check for XSS vulnerability

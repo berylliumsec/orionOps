@@ -1,7 +1,10 @@
-import sys
-import logging
-import requests
 import argparse
+import logging
+import sys
+
+import requests
+
+logging.basicConfig(filename="/RESULTS/command_injection.log", level=logging.DEBUG)
 
 parser = argparse.ArgumentParser(description="Configure proxy")
 parser.add_argument(
@@ -15,8 +18,12 @@ parser.add_argument(
     help="IP and Port of proxy",
 )
 args = parser.parse_args()
+if not args.url:
+    logging.debug("No URL supplied, exiting")
+    sys.exit(1)
+else:
+    logging.debug("Checking URL %s", args.url)
 logging.debug(args.url, args.proxy)
-logging.basicConfig(filename="/RESULTS/command_injection.log", level=logging.DEBUG)
 
 # Setting variables
 url = args.url

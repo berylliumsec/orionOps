@@ -1,9 +1,10 @@
-import logging
 import argparse
+import logging
+import sys
+
 import requests
 
 logging.basicConfig(filename="/RESULTS/security_headers.log", level=logging.DEBUG)
-import argparse
 
 
 def check_security_headers(url):
@@ -45,4 +46,9 @@ if __name__ == "__main__":
         help="IP and Port of proxy",
     )
     args = parser.parse_args()
+    if not args.url:
+        logging.debug("No URL supplied, exiting")
+        sys.exit(1)
+    else:
+        logging.debug("Checking URL %s", args.url)
     check_security_headers(args.url)

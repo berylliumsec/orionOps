@@ -7,7 +7,7 @@ RUN apt update -y && apt upgrade -y && apt-get autoremove -y && apt-get clean -y
     kali-linux-headless \
     open-iscsi
 
-
+RUN pip3 install mitm6
 WORKDIR /
 RUN mkdir APP RESULTS
 WORKDIR /APP

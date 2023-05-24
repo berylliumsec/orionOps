@@ -1,6 +1,8 @@
-import requests
-import logging
 import argparse
+import logging
+import sys
+
+import requests
 
 logger = logging.getLogger(__name__)
 
@@ -49,4 +51,9 @@ if __name__ == "__main__":
         help="IP and Port of proxy",
     )
     args = parser.parse_args()
+    if not args.url:
+        logging.debug("No URL supplied, exiting")
+        sys.exit(1)
+    else:
+        logging.debug("Checking URL %s", args.url)
     is_clickjacking_protected(args.url)
