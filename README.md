@@ -85,6 +85,17 @@ docker run -v "$(pwd)":/RESULTS berryliumsec/petusawo:latest \
 run_web_app_tests target_ip_address_or_list_of_ips optional_proxy_address
 ```
 
+### Check for IPV6 traffic
+
+```bash
+screen -S tshark -d -m docker run --network host -v -it "$(pwd)":/RESULTS berryliumsec/petusawo:latest \
+check_for_ipv6_traffic network_interface to listen on
+```
+
+You can interact with the above screen with the command:
+```
+screen -r tshark
+```
 ### Checking for SMB signing not required
 
 ```bash
@@ -92,12 +103,6 @@ docker run -v "$(pwd)":/RESULTS berryliumsec/petusawo:latest \
 check_if_smb_is_required target_ip_address_or_list_of_ips
 ```
 
-### Check for IPV6 traffic
-
-```bash
-screen -S tshark -d -m docker run --network host -v -it "$(pwd)":/RESULTS berryliumsec/petusawo:latest \
-check_for_ipv6_traffic network_interface to listen on
-```
 ### Exploit SMB signing not required via DNS6 poisioning and NTLM relay.
 
 ```bash

