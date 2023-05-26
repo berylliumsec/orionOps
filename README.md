@@ -107,7 +107,7 @@ check_if_smb_is_required target_ip_address_or_list_of_ips
 
 ```bash
 screen -S mitm6 -d -m  docker run -it --network host -v "$(pwd)":/RESULTS berryliumsec/petusawo:latest \
-start_mitm6 target_domain_name local_network_interface
+start_mitm6 local_network_interface target_domain_name
 ```
 
 You can interact with the above screen with the command:
