@@ -44,7 +44,7 @@ To run zap against a url, run the following command, replacing the url with the 
 The results will be outputted to whatever directory you specify.
 
 ```bash
-docker run -v "$(pwd)":/RESULTS berryliumsec/petusawo:latest \
+docker run --rm -v "$(pwd)":/RESULTS berryliumsec/petusawo:latest \
 zap_vuln_scan https://yourtarget.com/
 ```
 
@@ -52,7 +52,7 @@ To run Zap against a list of URLs, place the urls in file named urls.txt in the 
 on a new line (the last line must be terminated with a new line). Run:
 
 ```bash
-docker run -v "$(pwd)":/RESULTS berryliumsec/petusawo:latest \
+docker run --rm -v "$(pwd)":/RESULTS berryliumsec/petusawo:latest \
 zap_vuln_scan your_list.txt
 ```
 
@@ -61,7 +61,7 @@ zap_vuln_scan your_list.txt
 Example of running NMAP's vulnerability scan against an IP address:
 
 ```bash
-docker run -v "$(pwd)":/RESULTS berryliumsec/petusawo:latest \
+docker run --rm -v "$(pwd)":/RESULTS berryliumsec/petusawo:latest \
 nmap_vuln_scan 000.00.000.000
 ```
 
@@ -71,7 +71,7 @@ the list in a file named ips.txt in the `PWD` with each IP address on a new line
 Run:
 
 ```bash
-docker run -v "$(pwd)":/RESULTS berryliumsec/petusawo:latest \
+docker run --rm -v "$(pwd)":/RESULTS berryliumsec/petusawo:latest \
 nmap_vuln_scan your_list.txt
 ```
 
@@ -81,14 +81,14 @@ All web application scans can be run through an optional proxy server such as bu
 If no proxy is being used, the option can be ignored.
 
 ```bash
-docker run -v "$(pwd)":/RESULTS berryliumsec/petusawo:latest \
+docker run --rm -v "$(pwd)":/RESULTS berryliumsec/petusawo:latest \
 run_web_app_tests target_ip_address_or_list_of_ips optional_proxy_address
 ```
 
 ### Check for IPV6 traffic
 
 ```bash
-screen -S tshark -d -m docker run --network host -v -it "$(pwd)":/RESULTS berryliumsec/petusawo:latest \
+screen -S tshark -d -m docker run --rm --network host -v -it "$(pwd)":/RESULTS berryliumsec/petusawo:latest \
 check_for_ipv6_traffic network_interface to listen on
 ```
 
@@ -99,14 +99,14 @@ screen -r tshark
 ### Checking for SMB signing not required
 
 ```bash
-docker run -v "$(pwd)":/RESULTS berryliumsec/petusawo:latest \
+docker run --rm -v "$(pwd)":/RESULTS berryliumsec/petusawo:latest \
 check_if_smb_is_required target_ip_address_or_list_of_ips
 ```
 
 ### Exploit SMB signing not required via DNS6 poisioning and NTLM relay.
 
 ```bash
-screen -S mitm6 -d -m  docker run -it --network host -v "$(pwd)":/RESULTS berryliumsec/petusawo:latest \
+screen -S mitm6 -d -m  docker run --rm -it --network host -v "$(pwd)":/RESULTS berryliumsec/petusawo:latest \
 start_mitm6 local_network_interface target_domain_name
 ```
 
@@ -116,7 +116,7 @@ screen -r mitm6
 ```
 
 ```bash
-screen -S ipv6_relay -d -m  docker run -it --network host -v "$(pwd)":/RESULTS berryliumsec/petusawo:latest \
+screen -S ipv6_relay -d -m  docker run --rm -it --network host -v "$(pwd)":/RESULTS berryliumsec/petusawo:latest \
 start_nltm_relay_ipv6 target_ip_address_or_list_of_ips
 ```
 
