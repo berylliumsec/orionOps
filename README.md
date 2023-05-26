@@ -147,7 +147,7 @@ start_nltm_relay_ipv4 target_ip_address_or_list_of_ips
 You can interact with the above screen with the command:
 
 ```
-screen -r ipv6_relay
+screen -r ipv4_relay
 ```
 
 ### Checking for and exploit null SMB Sessions
