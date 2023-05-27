@@ -45,8 +45,8 @@ if [ "$1" = "zap_vuln_scan" ]; then
         nmap -O "$2" >/RESULTS/nmap_fingerprinting_raw_results
     fi
     
-    elif [ "$1" = "check_if_smb_is_required" ]; then
-    /scripts/bash/check_if_smb_is_required.sh "$2" >>/RESULTS/smb_signing_results
+    elif [ "$1" = "check_if_smb_signing_is_required" ]; then
+    /scripts/bash/check_if_smb_signing_is_required.sh "$2" >>/RESULTS/smb_signing_results
     
     elif [ "$1" = "check_for_ipv6_traffic" ]; then
     /scripts/bash/check_for_ipv6_traffic.sh "$2"
