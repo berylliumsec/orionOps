@@ -6,3 +6,4 @@ if [ -f "$1" ]; then
 else
     crackmapexec smb "$1"
 fi
+exit
