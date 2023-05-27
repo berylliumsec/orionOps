@@ -26,13 +26,13 @@ if [ "$1" = "zap_vuln_scan" ]; then
     fi
     
     elif [ "$1" = "nmap" ]; then
-        if [ -f "/RESULTS/$2" ]; then
+    if [ -f "/RESULTS/$2" ]; then
         while read -r ip; do
             nmap "$ip" >>/RESULTS/nmap_raw_results
         done < <(grep . "/RESULTS/$2")
-        else
-            nmap -sV --script nmap-vulners/ "$2" >/RESULTS/nmap_raw_results
-        fi
+    else
+        nmap -sV --script nmap-vulners/ "$2" >/RESULTS/nmap_raw_results
+    fi
     nmap "$2" >>/RESULTS/nmap_raw_results
     
     elif [ "$1" = "os_finger_printing" ]; then
@@ -46,37 +46,37 @@ if [ "$1" = "zap_vuln_scan" ]; then
     fi
     
     elif [ "$1" = "check_if_smb_is_required" ]; then
-        /scripts/bash/check_if_smb_is_required.sh "$2" >>/RESULTS/smb_signing_results
-
+    /scripts/bash/check_if_smb_is_required.sh "$2"
+    
     elif [ "$1" = "check_for_ipv6_traffic" ]; then
-        /scripts/bash/check_for_ipv6_traffic.sh "$2"
-
+    /scripts/bash/check_for_ipv6_traffic.sh "$2"
+    
     elif [ "$1" = "start_mitm6" ]; then
-        /scripts/bash/start_mitm6.sh "$2" "$3"
-
+    /scripts/bash/start_mitm6.sh "$2" "$3"
+    
     elif [ "$1" = "start_nltm_relay_ipv6" ]; then
-        /scripts/bash/start_nltm_relay_ipv6.sh "$2"
+    /scripts/bash/start_nltm_relay_ipv6.sh "$2"
     
     elif [ "$1" = "start_responder" ]; then
-        /scripts/bash/start_responder.sh "$2"
-
+    /scripts/bash/start_responder.sh "$2"
+    
     elif [ "$1" = "start_nltm_relay_ipv4" ]; then
-        /scripts/bash/start_nltm_relay_ipv4.sh "$2"
+    /scripts/bash/start_nltm_relay_ipv4.sh "$2"
     
     elif [ "$1" = "check_and_exploit_null_smb_sessions" ]; then
-        /scripts/bash/check_and_exploit_null_smb_sessions.sh "$2" >>/RESULTS/smb_null_session_results
+    /scripts/bash/check_and_exploit_null_smb_sessions.sh "$2" >>/RESULTS/smb_null_session_results
     
     elif [ "$1" = "run_web_app_tests" ]; then
-        /scripts/bash/run_web_app_tests.sh "$2" "$3"
+    /scripts/bash/run_web_app_tests.sh "$2" "$3"
     
     elif [ "$1" = "list_iscsi_targets" ]; then
-        /scripts/bash/list_iscsi_targets.sh "$2" "$3"
+    /scripts/bash/list_iscsi_targets.sh "$2" "$3"
     
     elif [ "$1" = "test_unauthenticated_iscsi_sessions" ]; then
-        /scripts/bash/test_unauthenticated_iscsi_sessions.sh "$2" "$3"
-
+    /scripts/bash/test_unauthenticated_iscsi_sessions.sh "$2" "$3"
+    
     elif [ "$1" = "resolve_fqdn" ]; then
-        /scripts/bash/resolve_fqdn.sh "$2"
+    /scripts/bash/resolve_fqdn.sh "$2"
     
     elif [ "$1" = "help" ]; then
     printf "\n"
