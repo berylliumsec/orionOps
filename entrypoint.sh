@@ -92,18 +92,18 @@ if [ "$1" = "zap_vuln_scan" ]; then
     printf "\n"
     printf "os_finger_printing"
     
-    # else
-    #     printf "\n"
-    #     printf "zap_vuln_scan"
-    #     printf "\n"
-    #     printf "nmap_vuln_scan"
-    #     printf "\n"
-    #     printf "nmap"
-    #     printf "\n"
-    #     printf "check_if_smb_is_required"
-    #     printf "\n"
-    #     printf "check_and_exploit_null_smb_sessions"
-    #     printf "\n"
-    #     printf "os_finger_printing"
-    #     /bin/bash
+else
+    printf "\n"
+    printf "zap_vuln_scan"
+    printf "\n"
+    printf "nmap_vuln_scan"
+    printf "\n"
+    printf "nmap"
+    printf "\n"
+    printf "check_if_smb_is_required"
+    printf "\n"
+    printf "check_and_exploit_null_smb_sessions"
+    printf "\n"
+    printf "os_finger_printing"
+    /bin/bash "$1"
 fi
