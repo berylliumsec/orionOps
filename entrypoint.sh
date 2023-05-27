@@ -105,5 +105,5 @@ else
     printf "check_and_exploit_null_smb_sessions"
     printf "\n"
     printf "os_finger_printing"
-    /bin/bash "$1"
+    /bin/bash
 fi
