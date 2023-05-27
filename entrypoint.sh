@@ -48,9 +48,9 @@ if [ "$1" = "zap_vuln_scan" ]; then
     elif [ "$1" = "check_if_smb_signing_is_required" ]; then
     # /scripts/bash/check_if_smb_signing_is_required.sh "$2" 1>&0
     if [ -f "$1" ]; then
-        crackmapexec smb targets "$1" 1>&0
+        crackmapexec smb targets "$1" 1>&2
     else
-        crackmapexec smb "$1" 1>&0
+        crackmapexec smb "$1" 1>&2
     fi
     elif [ "$1" = "check_for_ipv6_traffic" ]; then
     /scripts/bash/check_for_ipv6_traffic.sh "$2"
