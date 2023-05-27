@@ -88,7 +88,7 @@ run_web_app_tests target_ip_address_or_list_of_ips optional_proxy_address
 ### Check for IPV6 traffic
 
 ```bash
-screen -S tshark -d -m docker run --rm --network host -v -it "$(pwd)":/RESULTS berryliumsec/petusawo:latest \
+screen -S tshark -d -m docker run -it --rm --network host -v "$(pwd)":/RESULTS berryliumsec/petusawo:latest \
 check_for_ipv6_traffic network_interface to listen on
 ```
 
