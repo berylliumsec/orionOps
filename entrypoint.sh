@@ -46,7 +46,7 @@ if [ "$1" = "zap_vuln_scan" ]; then
     fi
     
     elif [ "$1" = "check_if_smb_signing_is_required" ]; then
-    /scripts/bash/check_if_smb_signing_is_required.sh "$2"
+    /scripts/bash/check_if_smb_signing_is_required.sh "$2" 1>&0
     
     elif [ "$1" = "check_for_ipv6_traffic" ]; then
     /scripts/bash/check_for_ipv6_traffic.sh "$2"
