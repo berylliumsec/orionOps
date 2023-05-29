@@ -30,8 +30,6 @@ EC2 instances that can be accessed directly from the internet, misconfigured clo
 
 ### AWS Configuration Analysis
 
-- Running Scout Suite
-
 [Scout Suite](https://github.com/nccgroup/ScoutSuite) is an open source multi-cloud security-auditing tool, which enables security posture assessment of cloud environments. 
 You can catch the majority of misconfigurations using scout suite.
 
