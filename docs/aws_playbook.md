@@ -46,7 +46,7 @@ through a myriad of techniques, some of which are Server-Side Request Forgery, P
 The rationale behind this is that if you have access to an instance the data stored within the instance is not safeguarded with authentication or encryption. In addition, if an application running on the instance is compromised, the metadata can easily be accessed. Therefore, it is not a secure place to store sensitive information such as 
 passwords or long-term encryption keys.
 
-- Exploit Techniques:
+Exploit Techniques:
 
 To check if an instance is running IMDSv1, simply run the following command from within the instance:
 
@@ -107,21 +107,16 @@ The result will be written to a file named `aws_metadata.log` in the directory w
 
 Mitigation
 
-You can turn off access to your instance metadata by disabling the HTTP endpoint of the instance metadata service. If you do not 
-specify a value, the default is to enable the HTTP endpoint.
+You can turn off access to your instance metadata by disabling the HTTP endpoint of the instance metadata service. If you do not specify a value, the default is to enable the HTTP endpoint.
 
 
 Configure EC2 Instances to use IMDSv2:
 
-Amazon Linux is configured by default to use IMDSv2 but other operating systems, so they will need to be
-manually configured.
-
-https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/configuring-instance-metadata-options.html
+Amazon Linux is configured by default to use IMDSv2 but other operating systems, so they will need to be manually configured. You can find more information in the [AWS documentation](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/configuring-instance-metadata-options.html)
 
 
  
-- Cognito Pools: Ensure that AWS cognito pools do not support unauthenticated identities. You can find more information about how to
-activate or deactivate guest access on [this page](https://docs.aws.amazon.com/cognito/latest/developerguide/identity-pools.html) in
+- Cognito Pools: Ensure that AWS cognito pools do not support unauthenticated identities. You can find more information about how to activate or deactivate guest access on [this page](https://docs.aws.amazon.com/cognito/latest/developerguide/identity-pools.html) in
 the `Activate or deactivate guest access` section
 
 
