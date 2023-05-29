@@ -98,17 +98,9 @@ if [ "$1" = "zap_vuln_scan" ]; then
     printf "check_and_exploit_null_smb_sessions"
     printf "\n"
     printf "os_finger_printing"
+    printf "\n"
+    printf "enumerate_aws_meta_data"
     
 else
-    printf "\n"
-    printf "zap_vuln_scan"
-    printf "\n"
-    printf "nmap_vuln_scan"
-    printf "\n"
-    printf "nmap"
-    printf "\n"
-    printf "check_and_exploit_null_smb_sessions"
-    printf "\n"
-    printf "os_finger_printing"
-    /bin/bash
+    printf "command not found, spawinign a shell"
 fi
