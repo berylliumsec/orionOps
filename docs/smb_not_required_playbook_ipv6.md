@@ -9,8 +9,13 @@ screen -S tshark -d -m docker run --network host -v -it "$(pwd)":/RESULTS berryl
 check_for_ipv6_traffic network_interface to listen on
 ```
 
-If packets are flowing then the next step is to check if SMB signing is not required.
-To discover if SMB is enabled but not required, run (edit to match folder)
+If Ipv6 is not being actively managed by a DNS and DHCP server and IPv6 packets are flowing then we can likely
+compromise this network by setting up a DNS server and DHCP server for IPv6. It is worth noting that according to [RFC3484](https://www.ietf.org/rfc/rfc3484.txt)
+IPv6 will be preferred over IPv4 which means that once IPv6 is being managed, nodes on the network will send packets via IPv6 as
+opposed to IPV4.
+
+To ensure that the attack can be completed, the next step is to check if SMB signing is not required. To discover if SMB is enabled 
+but not required, run:
 
 ```bash
 docker run -v "$(pwd)":/RESULTS berryliumsec/petusawo:latest \
@@ -26,7 +31,7 @@ screen -S mitm6 -d -m  docker run -it --network host -v "$(pwd)":/RESULTS berryl
 start_mitm6 target_domain_name local_network_interface
 ```
 
-The above command runs mitm6 and impacket relay in two screens, you can view the running screens using:
+The above command runs mitm6 (Creates a DNS and DHCP server to manage IPV6) and impacket relay in two screens, you can view the running screens using:
 
 ```bash
 screen -ls
