@@ -5,7 +5,7 @@
 First check if IPv6 is being used on the network:
 
 ```bash
-screen -S tshark -d -m docker run --network host -v -it "$(pwd)":/RESULTS berryliumsec/petusawo:latest \
+screen -S tshark -d -m docker run -it --network host -v "$(pwd)":/RESULTS berryliumsec/petusawo:latest \
 check_for_ipv6_traffic network_interface to listen on
 ```
 
