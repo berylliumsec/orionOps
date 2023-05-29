@@ -156,7 +156,7 @@ running the `socks` command
 - Accessing SMB shares
 
 ```bash
-    docker run --rm -it --network host -v "$(pwd)":/RESULTS berryliumsec/petusawo:latest access_smb  \\\\ip_address_of_target DOMAIN\\Account
+    docker run --rm -it --network host -v "$(pwd)":/RESULTS berryliumsec/petusawo:latest access_smb \\\\ip_address_of_target\\c$ DOMAIN\\Account
 ```
 - Passing hashes for a WMIexec session
 
