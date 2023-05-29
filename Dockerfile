@@ -18,4 +18,5 @@ RUN chmod +x /scripts/bash/*
 RUN cd /usr/share/nmap/scripts/ && \
     git clone https://github.com/vulnersCom/nmap-vulners.git && \
     wget https://raw.githubusercontent.com/daviddias/node-dirbuster/master/lists/directory-list-2.3-medium.txt
+RUN sed -i 's/127.0.0.1 9050/127.0.0.1 1080/g' /etc/proxychains4.conf
 ENTRYPOINT [ "bash", "entrypoint.sh" ]
