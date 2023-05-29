@@ -36,7 +36,7 @@ You can catch the majority of misconfigurations using scout suite.
 
 ## Manual Checks
 
-- Instance Metadata
+- **Instance Metadata**
 
 Instance metadata is a source of information about your running instances, consisting of categories such as host name, events, and security groups. You can also use this data to access user data that you provided when launching the instance. 
 
@@ -116,7 +116,7 @@ Amazon Linux is configured by default to use IMDSv2 but other operating systems,
 
 
  
-- Cognito Pools: Ensure that AWS cognito pools do not support unauthenticated identities. You can find more information about how to activate or deactivate guest access on [this page](https://docs.aws.amazon.com/cognito/latest/developerguide/identity-pools.html) in
+- **Cognito Pools**: Ensure that AWS cognito pools do not support unauthenticated identities. You can find more information about how to activate or deactivate guest access on [this page](https://docs.aws.amazon.com/cognito/latest/developerguide/identity-pools.html) in
 the `Activate or deactivate guest access` section
 
 
