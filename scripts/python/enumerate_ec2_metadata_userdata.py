@@ -36,8 +36,7 @@ for data in metadata:
     else:
         logging.debug("metadata for endpoint %s not found", data)
 
-USERDATA_URL = args.user_data_url
-fetch_user_data = requests.get(USERDATA_URL, verify=False)
+fetch_user_data = requests.get(args.user_data_url, verify=False)
 
 if fetch_user_data.status_code == 200:
         logging.debug("Userdata found, %s:" ,fetch_data.text)

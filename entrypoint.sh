@@ -81,6 +81,9 @@ if [ "$1" = "zap_vuln_scan" ]; then
     
     elif [ "$1" = "resolve_fqdn" ]; then
     /scripts/bash/resolve_fqdn.sh "$2"
+
+    elif [ "$1" = "enumerate_aws_meta_data" ]; then
+    python3 /scripts/python/enumerate_ec2_metadata_userdata.py
     
     elif [ "$1" = "help" ]; then
     printf "\n"

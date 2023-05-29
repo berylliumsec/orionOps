@@ -37,7 +37,7 @@ you list one IP per line in the textfile, for example.
 198.1.3.221
 ```
 
-The you can pass the file name as command line arguement to the tool.
+The you can pass the file name as command line argument to the tool.
 ### ZAP
 
 To run zap against a url, run the following command, replacing the url with the target url.
@@ -103,7 +103,7 @@ docker run --rm -v "$(pwd)":/RESULTS berryliumsec/petusawo:latest \
 check_if_smb_is_required target_ip_address_or_list_of_ips
 ```
 
-### Exploit SMB signing not required via DNS6 poisioning and NTLM relay.
+### Exploit SMB signing not required via DNS6 poisoning and NTLM relay.
 
 ```bash
 screen -S mitm6 -d -m  docker run --rm -it --network host -v "$(pwd)":/RESULTS berryliumsec/petusawo:latest \
@@ -126,7 +126,7 @@ You can interact with the above screen with the command:
 screen -r ipv6_relay
 ```
 
-### Exploit SMB signing not required via DNS poisioning and NTLM relay.
+### Exploit SMB signing not required via DNS poisoning and NTLM relay.
 
 ```bash
 
