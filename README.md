@@ -163,9 +163,11 @@ running the `socks` command
 ```
 - Passing hashes for a WMIexec session
 
+NOTE: username must be in lowercase
+
 ```bash
 
-docker run --rm -it --network host -v "$(pwd)":/RESULTS berryliumsec/petusawo:latest pass_hashes_wmi_exec hashes user@x.x.x.x
+docker run --rm -it --network host -v "$(pwd)":/RESULTS berryliumsec/petusawo:latest pass_hashes_wmi_exec hashes username@x.x.x.x
 ```
 
 
