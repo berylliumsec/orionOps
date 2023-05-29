@@ -110,7 +110,7 @@ The result will be written to a file named `aws_metadata.log` in the directory w
 Also it is possible to access metadata without direct instance access if an application running on the instance can be compromised
 
 
-- Mitigation
+Mitigation
 
 You can turn off access to your instance metadata by disabling the HTTP endpoint of the instance metadata service. If you do not 
 specify a value, the default is to enable the HTTP endpoint.
