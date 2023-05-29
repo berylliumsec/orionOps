@@ -27,21 +27,24 @@ check_if_smb_is_required target_ip_address_or_list_of_ips
 If SMB is not required then:
 
 ```bash
-screen -S mitm6 -d -m  docker run -it --network host -v "$(pwd)":/RESULTS berryliumsec/petusawo:latest \
-start_mitm6 target_domain_name local_network_interface
+screen -S mitm6 -d -m  docker run --rm -it --network host -v "$(pwd)":/RESULTS berryliumsec/petusawo:latest \
+start_mitm6 local_network_interface target_domain_name
 ```
 
-The above command runs mitm6 (Creates a DNS and DHCP server to manage IPV6) and impacket relay in two screens, you can view the running screens using:
-
-```bash
-screen -ls
+You can interact with the above screen with the command:
 ```
-
-Activate running screens with:
-
-```bash
-screen -r relay_ipv6
 screen -r mitm6
+```
+
+```bash
+screen -S ipv6_relay -d -m  docker run --rm -it --network host -v "$(pwd)":/RESULTS berryliumsec/petusawo:latest \
+start_nltm_relay_ipv6 target_ip_address_or_list_of_ips
+```
+
+You can interact with the above screen with the command:
+
+```
+screen -r ipv6_relay
 ```
 
 Detach from a screen using
