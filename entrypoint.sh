@@ -45,13 +45,6 @@ if [ "$1" = "zap_vuln_scan" ]; then
         nmap -O "$2" >/RESULTS/nmap_fingerprinting_raw_results
     fi
     
-    elif [ "$1" = "check_if_smb_signing_is_required" ]; then
-    # /scripts/bash/check_if_smb_signing_is_required.sh "$2" 1>&0
-    if [ -f "$1" ]; then
-        crackmapexec smb targets "$1" 1>&2
-    else
-        crackmapexec smb "$1" 1>&2
-    fi
     elif [ "$1" = "check_for_ipv6_traffic" ]; then
     /scripts/bash/check_for_ipv6_traffic.sh "$2"
     
@@ -102,8 +95,6 @@ if [ "$1" = "zap_vuln_scan" ]; then
     printf "\n"
     printf "nmap"
     printf "\n"
-    printf "check_if_smb_is_required"
-    printf "\n"
     printf "check_and_exploit_null_smb_sessions"
     printf "\n"
     printf "os_finger_printing"
@@ -115,8 +106,6 @@ else
     printf "nmap_vuln_scan"
     printf "\n"
     printf "nmap"
-    printf "\n"
-    printf "check_if_smb_is_required"
     printf "\n"
     printf "check_and_exploit_null_smb_sessions"
     printf "\n"
