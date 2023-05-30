@@ -42,8 +42,7 @@ Instance metadata is a source of information about your running instances, consi
 The instance metadata should be turned off if it is not being used, and if it is being used, ensure that it is IMDSv2 not IMDSv1. This is because it can be compromised
 through a myriad of techniques, some of which are Server-Side Request Forgery, Proxies, DNS Rebinding etc
 
-The rationale behind this is that if you have access to an instance the data stored within the instance is not safeguarded with authentication or encryption. In addition, if an application running on the instance is compromised, the metadata can easily be accessed. Therefore, it is not a secure place to store sensitive information such as 
-passwords or long-term encryption keys.
+The rationale behind this is that if you have access to an instance, the data stored within the instance is not safeguarded with authentication or encryption. In addition, if an application running on the instance is compromised, the metadata can easily be accessed. Therefore, it is not a secure place to store sensitive information such as passwords or long-term encryption keys.
 
 Exploit Techniques:
 
