@@ -46,6 +46,7 @@ The rationale behind this is that if you have access to an instance, the data st
 
 Exploit Techniques:
 
+NOTE: these commands need to be run from within the instance or through ServerSide Request Forgery (Post Compromise)
 To check if an instance is running IMDSv1, simply run the following command from within the instance:
 
 ```bash
