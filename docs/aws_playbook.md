@@ -13,7 +13,8 @@ to look out for are secrets stored in the scripts and secrets stored in user dat
 Git repositories that contain cloud resource configurations should also be analyzed to ensure that secrets are not being stored therein. 
 
 [Checkov](https://github.com/bridgecrewio/checkov) is a static code analysis tool for infrastructure as code (IaC) and also a software composition
-analysis (SCA) tool for images and open source packages. It can be used to analyze cloudformation scripts for best practices, secrets etc
+analysis (SCA) tool for images and open source packages. It can be used to analyze cloudformation scripts for best practices, secrets, making sure
+that docker containers are not being run as root etc
 
 [Trivy](https://github.com/aquasecurity/trivy) is a security tool that can be used to analyze docker images for vulnerabilities. 
 
