@@ -7,7 +7,8 @@
 Analyzing docker images for vulnerabilities is important to determine if there are dependencies in the base or layered docker images that contain
 vulnerabilities that could be exploited by an attacker.
 
-Analyzing Cloud formation scripts is important to ensure practices are being followed and that IaC is deployed in a secure manner.
+Analyzing Cloud formation scripts is important to ensure best practices are being followed and that IaC is deployed in a secure manner. Some things
+to look out for are secrets stored in the scripts and secrets stored in user data,
 
 Git repositories that contain cloud resource configurations should also be analyzed to ensure that secrets are not being stored therein. 
 
@@ -20,9 +21,7 @@ analysis (SCA) tool for images and open source packages. It can be used to analy
 
 ### OSINT:
 
-Open source intelligence can be a valuable when analyzing the attack surface area of a cloud environment. You can often find S3 buckets with public objects,
-
-EC2 instances that can be accessed directly from the internet, misconfigured cloudfront, leaked secrets etc.
+Open source intelligence can be a valuable when analyzing the attack surface area of a cloud environment. You can often find S3 buckets with public objects, EC2 instances that can be accessed directly from the internet, misconfigured cloudfront, leaked secrets etc.
 
 - If the AWS environment is hosting a domain, you can start by searching for the domain in the [Have I Been Pawned Website](https://haveibeenpwned.com/DomainSearch)
 
