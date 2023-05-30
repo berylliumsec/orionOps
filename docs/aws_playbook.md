@@ -112,7 +112,7 @@ You can turn off access to your instance metadata by disabling the HTTP endpoint
 
 Configure EC2 Instances to use IMDSv2:
 
-Amazon Linux is configured by default to use IMDSv2 but other operating systems, so they will need to be manually configured. You can find more information in the [AWS documentation](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/configuring-instance-metadata-options.html)
+Amazon Linux is configured by default to use IMDSv2 but other operating systems are not, so they will need to be manually configured. You can find more information in the [AWS documentation](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/configuring-instance-metadata-options.html)
 
 
  
