@@ -53,6 +53,9 @@ if [ "$1" = "zap_vuln_scan" ]; then
     
     elif [ "$1" = "start_nltm_relay_ipv6" ]; then
     /scripts/bash/start_nltm_relay_ipv6.sh "$2"
+
+    elif [ "$1" = "check_if_smb_signing_is_required" ]; then
+    /scripts/bash/check_if_smb_signing_is_required.sh "/RESULTS/$2"
     
     elif [ "$1" = "start_responder" ]; then
     /scripts/bash/start_responder.sh "$2"
@@ -102,5 +105,6 @@ if [ "$1" = "zap_vuln_scan" ]; then
     printf "enumerate_aws_meta_data"
     
 else
-    printf "command not found, spawinign a shell"
+    printf "command not found, spawning a shell"
+    /bin/bash
 fi

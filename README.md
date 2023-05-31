@@ -96,14 +96,10 @@ You can interact with the above screen with the command:
 ```
 screen -r tshark
 ```
-### Checking for SMB signing not required
-Spawn a shell in the container
+### Checking if SMB signing is not required
+
 ```bash
-docker run --rm -it -v "$(pwd)":/RESULTS berryliumsec/petusawo:latest 
-```
-Inside the container:
-```bash
-/scripts/bash/check_if_smb_signing_is_required.sh /RESULTS/targets.txt
+docker run --rm -it -v "$(pwd)":/RESULTS berryliumsec/petusawo:latest check_if_smb_signing_is_required smb_targets.txt
 ```
 
 ### Exploit SMB signing not required via DNS6 poisoning and NTLM relay.
