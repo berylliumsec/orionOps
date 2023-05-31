@@ -110,6 +110,9 @@ compromise this network by setting up a DNS server and DHCP server for IPv6. It 
 IPv6 will be preferred over IPv4 which means that once IPv6 is being managed, nodes on the network will send packets via IPv6 as
 opposed to IPV4.
 
+By default, windows hosts will send a DHCP discovery packet to try to discover DHCP servers and we will take advantage of this by responding using 
+mitm6
+
 ```bash
 screen -S mitm6 -d -m  docker run --rm -it --network host -v "$(pwd)":/RESULTS berryliumsec/petusawo:latest \
 start_mitm6 local_network_interface target_domain_name
