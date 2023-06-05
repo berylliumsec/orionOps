@@ -7,6 +7,6 @@ echo "Session token: $SessionToken"
 echo "Access Key Id: $AccessKeyId"
 echo "Secret Access Key: $SecretAccessKey"
 export AWS_ACCESS_KEY_ID="$SecretAccessKey"
-export AWS_SECRET_ACCESS_KEY="$SessionToken"
-export AWS_SESSION_TOKEN="$AccessKeyId"
-aws --no-paginate sts get-caller-identity
+export AWS_SECRET_ACCESS_KEY="$AccessKeyId"
+export AWS_SESSION_TOKEN="$SessionToken"
+
