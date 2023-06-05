@@ -2,7 +2,7 @@
 if [ -n "$4" ]; then
 response="$(aws sts assume-role --no-paginate --role-arn "$1" --role-session-name "$2" --serial-number "$3" --token-code "$4")"
 else
-response="$(aws sts assume-role --no-paginate --role-arn "$1" --role-session-name "$2" --serial-number "$3")"
+response="$(aws sts assume-role --no-paginate --role-arn "$1" --role-session-name "$2")"
 fi
 SessionToken=$(jq -r '.Credentials.SessionToken' <<< "$response")
 AccessKeyId=$(jq -r '.Credentials.AccessKeyId' <<< "$response")

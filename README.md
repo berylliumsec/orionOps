@@ -227,7 +227,7 @@ resolve_fqdn target_ip_address_or_list_of_target_ips
 Assume role with MFA
 
 ```bash
-./assume_role_with_mfa arn:aws:iam::XXXXXXX:role/assume_role_test arn:aws:iam::xxxxxxx:mfa/xxxx 0000(your_mfa_code)
+./assume_role_with_mfa arn:aws:iam::XXXXXXX:role/assume_role_test session_name arn:aws:iam::xxxxxxx:mfa/xxxx 0000(your_mfa_code)
 ```
 ### Output Files
 
