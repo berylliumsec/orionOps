@@ -235,6 +235,12 @@ Assume role without MFA
 ```bash
 . ./assume_role_with_mfa arn:aws:iam::XXXXXXX:role/assume_role_test session_name
 ```
+
+Get Session Token and Assume Role
+
+```bash
+. ./get_session_token arn:aws:iam::XXXXXX:mfa/xxxx 0000(your_mfa_code)
+```
 ### Output Files
 
 All log files will be placed in the directory from which you run the docker container.
