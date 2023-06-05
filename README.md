@@ -223,6 +223,12 @@ Resolve IPs to FQDNS
 docker run -v "$(pwd)":/RESULTS berryliumsec/petusawo:latest \
 resolve_fqdn target_ip_address_or_list_of_target_ips 
 ```
+
+Assume role with MFA
+
+```bash
+./assume_role_with_mfa arn:aws:iam::XXXXXXX:role/assume_role_test arn:aws:iam::xxxxxxx:mfa/xxxx 0000(your_mfa_code)
+```
 ### Output Files
 
 All log files will be placed in the directory from which you run the docker container.
