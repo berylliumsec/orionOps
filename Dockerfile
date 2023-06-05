@@ -5,9 +5,17 @@ ENV DEBIAN_FRONTEND noninteractive
 
 RUN apt update -y && apt upgrade -y && apt-get autoremove -y && apt-get clean -y && apt-get -y install --no-install-recommends \
     kali-linux-headless \
-    open-iscsi
+    open-iscsi \
+    jq
 
 RUN pip3 install mitm6
+WORKDIR tools
+RUN curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip" && \
+unzip awscliv2.zip && \
+./aws/install
+RUN export AWS_ACCESS_KEY_ID=my-20-digit-id && \
+export AWS_SECRET_ACCESS_KEY=my-40-digit-secret-key && \
+export AWS_DEFAULT_REGION=us-east-1
 WORKDIR /
 RUN mkdir APP RESULTS
 WORKDIR /APP
