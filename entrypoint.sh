@@ -93,6 +93,8 @@ if [ "$1" = "zap_vuln_scan" ]; then
     elif [ "$1" = "pass_hashes_wmi_exec" ]; then
     impacket-wmiexec -hashes "$2" "$3"
     
+    elif [ "$1" == "discover_aws_services" ]; then
+    python3 /scripts/python/discover_aws_services.py
     elif [ "$1" = "help" ]; then
     printf "\n"
     printf "zap_vuln_scan"

@@ -215,6 +215,12 @@ docker run -v "$(pwd)":/RESULTS berryliumsec/petusawo:latest \
 test_unauthenticated_iscsi_sessions target_ip_address_or_list_of_target_ips iscsi_target
 ```
 
+### Discover aws services
+
+```bash
+docker run --env-file <(env | grep -E '^AWS_') -v "$(pwd)":/RESULTS berryliumsec/petusawo:latest \
+discover_aws_services
+```
 ### Utilities
 
 Resolve IPs to FQDNS
