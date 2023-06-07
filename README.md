@@ -217,9 +217,9 @@ test_unauthenticated_iscsi_sessions target_ip_address_or_list_of_target_ips iscs
 
 ### Discover aws services
 
+Change the region as needed, AWS credentials must already be exported into your ENV
 ```bash
-docker run --env-file <(env | grep -E '^AWS_') -v "$(pwd)":/RESULTS berryliumsec/petusawo:latest \
-discover_aws_services
+docker run --env-file <(env | grep -E '^AWS_') -v "$(pwd)":/RESULTS berryliumsec/petusawo:latest discover_aws_services us-east-1
 ```
 ### Utilities
 

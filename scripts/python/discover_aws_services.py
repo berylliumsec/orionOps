@@ -1,6 +1,6 @@
 import argparse
 import logging
-import os
+import json
 
 import boto3
 
@@ -41,7 +41,7 @@ def get_services() -> None:
                 resources.append(split_resource)
 
     with open("/RESULTS/aws_resources.json", "w") as f:
-        f.write(resources)
+        f.write((json.dumps(resources)))
 
 
 
