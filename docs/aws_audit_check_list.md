@@ -7,3 +7,6 @@
 - [ ] Ensure that RDS databases are encrypted [Encrypting Amazon RDS resources](https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/Overview.Encryption.html)
 - [ ] Get system log for EC2 instances and ensure that no sensitive data is included [Get System Log](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/instance-console.html)
 - [ ] Ensure that EC2 instances are using IMDSv2 [Require the use of IMDSv2](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/configuring-IMDS-existing-instances.html)
+- [ ] Ensure that root accounts do not have access keys [Best practices for managing AWS access keys](https://docs.aws.amazon.com/accounts/latest/reference/credentials-access-keys-best-practices.html)
+- [ ] Ensure that root accounts are not being used for day to day tasks [How can I monitor the account activity of specific IAM users, roles, and AWS access keys?](https://repost.aws/knowledge-center/view-iam-history)
+
