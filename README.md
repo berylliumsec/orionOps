@@ -221,6 +221,11 @@ Change the region as needed, AWS credentials must already be exported into your 
 ```bash
 docker run --env-file <(env | grep -E '^AWS_') -v "$(pwd)":/RESULTS berryliumsec/petusawo:latest discover_aws_services us-east-1
 ```
+### Enumerate ciphers a host is using
+
+```bash
+docker run --env-file <(env | grep -E '^AWS_') -v "$(pwd)":/RESULTS berryliumsec/petusawo:latest enumerate_supported_ciphers PORT IPADDRESS_OR_URL
+```
 ### Utilities
 
 Resolve IPs to FQDNS
