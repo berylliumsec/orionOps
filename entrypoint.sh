@@ -95,6 +95,10 @@ if [ "$1" = "zap_vuln_scan" ]; then
     
     elif [ "$1" == "discover_aws_services" ]; then
     python3 /scripts/python/discover_aws_services.py --Region "$2"
+
+    elif [ "$1" == "enumerate_supported_ciphers" ]; then
+    nmap --script ssl-enum-ciphers -p "$2" "$3" >> "/RESULTS/$3-supported_ciphers"
+
     elif [ "$1" = "help" ]; then
     printf "\n"
     printf "zap_vuln_scan"
