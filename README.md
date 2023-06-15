@@ -37,6 +37,8 @@ you list one IP per line in the textfile, for example.
 198.1.3.221
 ```
 
+In addition, all output from the docker container will be written to your current working directory.
+
 The you can pass the file name as command line argument to the tool.
 ### ZAP
 
