@@ -30,14 +30,14 @@ docker-compose build
 
 Throughout this repository, we refer to "list_of_ips". To pass a list of IPs to any command,
 create a text file in the directory from which the docker command will be run. Ensure that
-you list one IP per line in the textfile, for example.
+you list one IP per line in the text-file, for example.
 
 ```
 198.1.2.220
 198.1.3.221
 ```
 
-In addition, all output from the docker container will be written to logfiles your current working directory.
+**In addition, all output from the docker container will be written to log files your current working directory.**
 
 The you can pass the file name as command line argument to the tool.
 ### ZAP
