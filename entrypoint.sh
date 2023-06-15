@@ -55,7 +55,7 @@ if [ "$1" = "zap_vuln_scan" ]; then
     /scripts/bash/start_nltm_relay_ipv6.sh "$2"
 
     elif [ "$1" = "check_if_smb_signing_is_required" ]; then
-    /scripts/bash/check_if_smb_signing_is_required.sh "/RESULTS/$2"
+    /scripts/bash/check_if_smb_signing_is_required.sh "$2"
     
     elif [ "$1" = "start_responder" ]; then
     /scripts/bash/start_responder.sh "$2"
