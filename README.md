@@ -37,10 +37,16 @@ you list one IP per line in the text-file, for example.
 198.1.3.221
 ```
 
-**In addition, all output from the docker container will be written to log files your current working directory.**
+Then you can pass the file name as command line argument to the tool.
+### Logging
 
-The you can pass the file name as command line argument to the tool.
+Output from the docker container will either be written to log files your current working directory, or
+sent to stdout and displayed in your CLI
+
+
+
 ### ZAP
+**Output File Name: zap_processed_results_.json**
 
 To run zap against a url, run the following command, replacing the url with the target url.
 The results will be outputted to whatever directory you specify.
@@ -59,6 +65,8 @@ zap_vuln_scan your_list.txt
 ```
 
 ### NMAP
+
+**Output File Name: nmap_raw_results**
 
 Example of running NMAP's vulnerability scan against an IP address:
 
@@ -79,6 +87,8 @@ nmap_vuln_scan your_list.txt
 
 ### General WEB Application Scans
 
+**Output File Names: Multiple files ending in `.log`**
+
 All web application scans can be run through an optional proxy server such as burpsuite.
 If no proxy is being used, the option can be ignored.
 
@@ -88,6 +98,8 @@ run_web_app_tests target_ip_address_or_list_of_ips optional_proxy_address
 ```
 
 ### Check for IPV6 traffic
+
+**Output: CLI**
 
 ```bash
 screen -S tshark -d -m docker run -it --rm --network host -v "$(pwd)":/RESULTS berryliumsec/petusawo:latest \
@@ -100,11 +112,15 @@ screen -r tshark
 ```
 ### Checking if SMB signing is not required
 
+**Output: CLI**
+
 ```bash
 docker run --rm -it -v "$(pwd)":/RESULTS berryliumsec/petusawo:latest check_if_smb_signing_is_required smb_targets.txt
 ```
 
 ### Exploit SMB signing not required via DNS6 poisoning and NTLM relay.
+
+**Output: CLI**
 
 If Ipv6 is not being actively managed by a DNS and DHCP server and IPv6 packets are flowing then we can likely
 compromise this network by setting up a DNS server and DHCP server for IPv6. It is worth noting that according to [RFC3484](https://www.ietf.org/rfc/rfc3484.txt)
@@ -147,11 +163,15 @@ If SMB sessions have been created, you can perform a number of actions going for
 The domain/account used in the command below can be retrieved by resuming the `relay_ipv6` screen (see above) and
 running the `socks` command
 
+**Output: CLI**
+
     ```bash
     docker run --rm -it --network host -v "$(pwd)":/RESULTS berryliumsec/petusawo:latest dump_creds DOMAIN/Account@x.x.x.x
     ```
 
 - List SMB shares
+
+**Output: CLI**
 
 ```bash
     docker run --rm -it --network host -v "$(pwd)":/RESULTS berryliumsec/petusawo:latest list_smb_shares ip_address_of_target DOMAIN\\Account
@@ -159,10 +179,14 @@ running the `socks` command
 
 - Accessing SMB shares
 
+**Output: CLI**
+
 ```bash
     docker run --rm -it --network host -v "$(pwd)":/RESULTS berryliumsec/petusawo:latest access_smb \\\\ip_address_of_target\\c$ DOMAIN\\Account
 ```
 - Passing hashes for a WMIexec session
+
+**Output: CLI**
 
 NOTE: username must be in lowercase
 
@@ -173,6 +197,8 @@ docker run --rm -it --network host -v "$(pwd)":/RESULTS berryliumsec/petusawo:la
 
 
 ### Exploit SMB signing not required via DNS poisoning and NTLM relay.
+
+**Output: CLI**
 
 ```bash
 
@@ -198,12 +224,16 @@ screen -r ipv4_relay
 
 ### Checking for and exploit null SMB Sessions
 
+**Output File Name: smb_null_session_results**
+
 ```bash
 docker run -v "$(pwd)":/RESULTS berryliumsec/petusawo:latest \
 check_and_exploit_null_smb_sessions target_ip_address_or_list_of_ips
 ```
 
 ### List ISCSI targets
+
+**Output: CLI**
 
 ```bash
 docker run -v "$(pwd)":/RESULTS berryliumsec/petusawo:latest \
@@ -212,6 +242,8 @@ list_iscsi_targets target_ip_address_or_list_of_target_ips
 
 ### Connect to ISCSI targets without authentication
 
+**Output: CLI**
+
 ```bash
 docker run -v "$(pwd)":/RESULTS berryliumsec/petusawo:latest \
 test_unauthenticated_iscsi_sessions target_ip_address_or_list_of_target_ips iscsi_target
@@ -219,18 +251,23 @@ test_unauthenticated_iscsi_sessions target_ip_address_or_list_of_target_ips iscs
 
 ### Discover aws services
 
+**Output File Name: aws_resources.json**
+
 Change the region as needed, AWS credentials must already be exported into your ENV
 ```bash
 docker run --env-file <(env | grep -E '^AWS_') -v "$(pwd)":/RESULTS berryliumsec/petusawo:latest discover_aws_services us-east-1
 ```
 ### Enumerate ciphers a host is using
 
+**Output File Name: .supported_ciphers**
 ```bash
 docker run --env-file <(env | grep -E '^AWS_') -v "$(pwd)":/RESULTS berryliumsec/petusawo:latest enumerate_supported_ciphers PORT IPADDRESS_OR_URL
 ```
 ### Utilities
 
 Resolve IPs to FQDNS
+
+**Output File Name: dns_resolution.log**
 
 ```bash
 docker run -v "$(pwd)":/RESULTS berryliumsec/petusawo:latest \
