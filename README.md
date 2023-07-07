@@ -1,7 +1,9 @@
 # PETUSAWO
 
 The purpose of the project is to make it easier to perform penetration testing by wrapping
-up various important commands into bash scripts
+up various important commands into bash scripts.
+
+Note **This repository was created with Advanced Users in mind, it is not very beginner friendly**
   
 ## Supported Open Source Applications
 
@@ -94,7 +96,7 @@ screen -S tshark -d -m docker run -it --rm --network host -v "$(pwd)":/RESULTS b
 check_for_ipv6_traffic network_interface to listen on
 ```
 
-You can interact with the above screen with the command:
+You can view/interact with the above screen with the command:
 ```
 screen -r tshark
 ```
@@ -120,7 +122,7 @@ screen -S mitm6 -d -m  docker run --rm -it --network host -v "$(pwd)":/RESULTS b
 start_mitm6 local_network_interface target_domain_name
 ```
 
-You can interact with the above screen with the command:
+You can view/interact with the above screen with the command:
 ```
 screen -r mitm6
 ```
@@ -130,7 +132,7 @@ screen -S ipv6_relay -d -m  docker run --rm -it --network host -v "$(pwd)":/RESU
 start_nltm_relay_ipv6 target_ip_address_or_list_of_ips
 ```
 
-You can interact with the above screen with the command:
+You can view/interact with the above screen with the command:
 
 ```
 screen -r ipv6_relay

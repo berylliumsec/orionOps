@@ -6,7 +6,8 @@ ENV DEBIAN_FRONTEND noninteractive
 RUN apt update -y && apt upgrade -y && apt-get autoremove -y && apt-get clean -y && apt-get -y install --no-install-recommends \
     kali-linux-headless \
     open-iscsi \
-    jq
+    jq \
+    zaproxy
 
 RUN pip3 install mitm6 boto3
 WORKDIR tools

@@ -6,40 +6,48 @@ if [ "$1" = "zap_vuln_scan" ]; then
     if [ -f "/RESULTS/$2" ]; then
         counter=1
         while read -r url; do
+            printf "%s\n" "running scans, results will be written to zap_processed_results_.json"
             owasp-zap -cmd -quickurl "$url" -quickout "/RESULTS/zap_raw_results$counter.json" -silent -quickprogress &&
             jq . "/RESULTS/zap_raw_results$counter.json" >>/RESULTS/zap_processed_results_.json
             counter=$((counter + 1))
         done < <(grep . "/RESULTS/$2")
     else
+        printf "%s\n" "running scans, results will be written to zap_processed_results_.json"
         owasp-zap -cmd -quickurl "$2" -quickout /RESULTS/zap_raw_results.json -silent -quickprogress &&
         jq . /RESULTS/zap_raw_results.json >/RESULTS/zap_processed_results_.json
     fi
     
     elif [ "$1" = "nmap_vuln_scan" ]; then
-    printf "passing args to nmap: %s" "$2"
+    printf "%s\n" "passing args to nmap: %s" "$2"
     if [ -f "/RESULTS/$2" ]; then
+        printf "%s\n" "running scans, output will be written to nmap_raw_results in your current working folder"
         while read -r ip; do
-            nmap -sV --script nmap-vulners/ "$ip" >>/RESULTS/nmap_raw_results
+            nmap -sV --script nmap-vulners/ "$ip" 2>&1 | tee /RESULTS/nmap_raw_results
         done < <(grep . "/RESULTS/$2")
     else
-        nmap -sV --script nmap-vulners/ "$2" >/RESULTS/nmap_raw_results
+        printf "%s\n" "running scans, output will be written to nmap_raw_results in your current working folder"
+        nmap -sV --script nmap-vulners/ "$2" 2>&1 | tee /RESULTS/nmap_raw_results
     fi
     
     elif [ "$1" = "nmap" ]; then
     if [ -f "/RESULTS/$2" ]; then
         while read -r ip; do
-            nmap "$ip" >>/RESULTS/nmap_raw_results
+            printf "%s\n" "running scans, output will be written to nmap_raw_results in your current working folder"
+            nmap "$ip" 2>&1 | tee /RESULTS/nmap_raw_results
         done < <(grep . "/RESULTS/$2")
     else
-        nmap -sV --script nmap-vulners/ "$2" >/RESULTS/nmap_raw_results
+        printf "%s\n" "running scans, output will be written to nmap_raw_results in your current working folder"
+        nmap "$2"  2>&1 | tee /RESULTS/nmap_raw_results
     fi
+    printf "%s\n" "running scans"
     nmap "$2" >>/RESULTS/nmap_raw_results
     
     elif [ "$1" = "os_finger_printing" ]; then
     if [ -f "/RESULTS/$2" ]; then
         
         while read -r ip; do
-            nmap -O "$ip" >>/RESULTS/nmap_fingerprinting_raw_results
+            printf "%s\n" "running scans, output will be written to nmap_raw_results in your current working folder"
+            nmap -O "$ip" 2>&1 | tee RESULTS/nmap_fingerprinting_raw_results
         done < <(grep . "/RESULTS/$2")
     else
         nmap -O "$2" >/RESULTS/nmap_fingerprinting_raw_results
@@ -114,6 +122,6 @@ if [ "$1" = "zap_vuln_scan" ]; then
     printf "enumerate_aws_meta_data"
     
 else
-    printf "command not found, spawning a shell"
+    printf '%s\n' "command not found, spawning a shell"
     /bin/bash
 fi
