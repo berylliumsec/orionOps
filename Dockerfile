@@ -7,7 +7,9 @@ RUN apt update -y && apt upgrade -y && apt-get autoremove -y && apt-get clean -y
     kali-linux-headless \
     open-iscsi \
     jq \
-    zaproxy
+    zaproxy \
+    libpath-tiny-perl \
+    make
 
 RUN pip3 install mitm6 boto3
 WORKDIR tools
@@ -28,4 +30,6 @@ RUN cd /usr/share/nmap/scripts/ && \
     git clone https://github.com/vulnersCom/nmap-vulners.git && \
     wget https://raw.githubusercontent.com/daviddias/node-dirbuster/master/lists/directory-list-2.3-medium.txt
 RUN sed -i 's/127.0.0.1 9050/127.0.0.1 1080/g' /etc/proxychains4.conf
+RUN git clone https://github.com/CiscoCXSecurity/rdp-sec-check.git
+RUN yes | perl -MCPAN -e 'install Encoding::BER'
 ENTRYPOINT [ "bash", "entrypoint.sh" ]

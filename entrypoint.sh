@@ -22,22 +22,22 @@ if [ "$1" = "zap_vuln_scan" ]; then
     if [ -f "/RESULTS/$2" ]; then
         printf "%s\n" "running scans, output will be written to nmap_raw_results in your current working folder"
         while read -r ip; do
-            nmap -sV --script nmap-vulners/ "$ip" 2>&1 | tee /RESULTS/nmap_raw_results
+            nmap -sV --script nmap-vulners/ "$ip" 2>&1 | tee -a /RESULTS/nmap_raw_results
         done < <(grep . "/RESULTS/$2")
     else
         printf "%s\n" "running scans, output will be written to nmap_raw_results in your current working folder"
-        nmap -sV --script nmap-vulners/ "$2" 2>&1 | tee /RESULTS/nmap_raw_results
+        nmap -sV --script nmap-vulners/ "$2" 2>&1 | tee -a /RESULTS/nmap_raw_results
     fi
     
     elif [ "$1" = "nmap" ]; then
     if [ -f "/RESULTS/$2" ]; then
         while read -r ip; do
             printf "%s\n" "running scans, output will be written to nmap_raw_results in your current working folder"
-            nmap "$ip" 2>&1 | tee /RESULTS/nmap_raw_results
+            nmap -sV -Pn "$ip" 2>&1 | tee -a /RESULTS/nmap_raw_results
         done < <(grep . "/RESULTS/$2")
     else
         printf "%s\n" "running scans, output will be written to nmap_raw_results in your current working folder"
-        nmap "$2"  2>&1 | tee /RESULTS/nmap_raw_results
+        nmap "$2"  2>&1 | tee -a /RESULTS/nmap_raw_results
     fi
     printf "%s\n" "running scans"
     nmap "$2" >>/RESULTS/nmap_raw_results
@@ -47,7 +47,7 @@ if [ "$1" = "zap_vuln_scan" ]; then
         
         while read -r ip; do
             printf "%s\n" "running scans, output will be written to nmap_raw_results in your current working folder"
-            nmap -O "$ip" 2>&1 | tee RESULTS/nmap_fingerprinting_raw_results
+            nmap -O "$ip" 2>&1 | tee -a RESULTS/nmap_fingerprinting_raw_results
         done < <(grep . "/RESULTS/$2")
     else
         nmap -O "$2" >/RESULTS/nmap_fingerprinting_raw_results
@@ -107,6 +107,8 @@ if [ "$1" = "zap_vuln_scan" ]; then
     elif [ "$1" == "enumerate_supported_ciphers" ]; then
     nmap --script ssl-enum-ciphers -p "$2" "$3" >> "/RESULTS/$3-supported_ciphers"
 
+    elif [ "$1" == "check_rdp" ]; then
+    /APP/rdp-sec-check/rdp-sec-check.pl "$2" >> "/RESULTS/$2-rdp-check-results"
     elif [ "$1" = "help" ]; then
     printf "\n"
     printf "zap_vuln_scan"
