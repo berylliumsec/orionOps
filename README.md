@@ -3,7 +3,7 @@
 The purpose of the project is to make it easier to perform penetration testing by wrapping
 up various important commands into bash scripts.
 
-Note **This repository was created with Advanced Users in mind, it is not very beginner friendly**
+**Note: This repository was created with Advanced Users in mind, it is not very beginner friendly**
   
 ## Supported Open Source Applications
 
@@ -55,7 +55,7 @@ Example of running masscan against an IP address and a single port:
 ```bash
 docker run --rm -v "$(pwd)":/RESULTS berryliumsec/petusawo:latest \
 masscan 192.168.1.250 \-p80
-
+```
 
 Example of running masscan against a list of IP addresses and all ports:
 
