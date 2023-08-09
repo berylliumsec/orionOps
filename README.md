@@ -11,6 +11,8 @@ Note **This repository was created with Advanced Users in mind, it is not very b
 - NMAP
 - Crackmapexec
 - mitm6
+- masscan
+
   
 ## Getting Started
 
