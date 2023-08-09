@@ -32,4 +32,5 @@ RUN cd /usr/share/nmap/scripts/ && \
 RUN sed -i 's/127.0.0.1 9050/127.0.0.1 1080/g' /etc/proxychains4.conf
 RUN git clone https://github.com/CiscoCXSecurity/rdp-sec-check.git
 RUN yes | perl -MCPAN -e 'install Encoding::BER'
+RUN git clone https://github.com/robertdavidgraham/masscan && cd masscan && make &&  make install
 ENTRYPOINT [ "bash", "entrypoint.sh" ]

@@ -45,8 +45,22 @@ Then you can pass the file name as command line argument to the tool.
 Output from the docker container will either be written to log files your current working directory, or
 sent to stdout and displayed in your CLI
 
+### Masscan
+**Output File Name: masscan_raw_results**
+
+Example of running masscan against an IP address and a single port:
+
+```bash
+docker run --rm -v "$(pwd)":/RESULTS berryliumsec/petusawo:latest \
+masscan 192.168.1.250 \-p80
 
 
+Example of running masscan against a list of IP addresses and all ports:
+
+```bash
+docker run --rm -v "$(pwd)":/RESULTS berryliumsec/petusawo:latest \
+masscan target_list \-p0\-65535
+```
 ### ZAP
 **Output File Name: zap_processed_results_.json**
 
