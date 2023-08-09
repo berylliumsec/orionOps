@@ -12,6 +12,7 @@ up various important commands into bash scripts.
 - Crackmapexec
 - mitm6
 - masscan
+- rdp-sec-check.pl
 
   
 ## Getting Started
@@ -277,9 +278,16 @@ docker run --env-file <(env | grep -E '^AWS_') -v "$(pwd)":/RESULTS berryliumsec
 ```
 ### Enumerate ciphers a host is using
 
-**Output File Name: .supported_ciphers**
+**Output File Name: supported_ciphers**
 ```bash
 docker run --env-file <(env | grep -E '^AWS_') -v "$(pwd)":/RESULTS berryliumsec/petusawo:latest enumerate_supported_ciphers PORT IPADDRESS_OR_URL
+```
+
+### Perform security checks on rdp
+
+**Output File Name: targetipaddress-rdp-check-results**
+```bash
+docker run -v "$(pwd)":/RESULTS berryliumsec/petusawo:latest check_rdp
 ```
 ### Utilities
 
