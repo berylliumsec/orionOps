@@ -23,22 +23,22 @@ if [ "$1" = "nmap_vuln_scan" ]; then
     if [ -f "/RESULTS/$2" ]; then
         printf "%s\n" "running scans, output will be written to nmap_raw_results in your current working folder"
         while read -r ip; do
-            nmap -sV --script nmap-vulners/ "$ip" 2>&1 | tee -a /RESULTS/nmap_raw_results
+            nmap -O -Pn -sV --script nmap-vulners/ "$ip" 2>&1 | tee -a /RESULTS/nmap_raw_results
         done < <(grep . "/RESULTS/$2")
     else
         printf "%s\n" "running scans, output will be written to nmap_raw_results in your current working folder"
-        nmap -sV --script nmap-vulners/ "$2" 2>&1 | tee -a /RESULTS/nmap_raw_results
+        nmap -O -Pn -sV --script nmap-vulners/ "$2" 2>&1 | tee -a /RESULTS/nmap_raw_results
     fi
 fi
 if [ "$1" = "nmap" ]; then
     if [ -f "/RESULTS/$2" ]; then
         while read -r ip; do
             printf "%s\n" "running scans, output will be written to nmap_raw_results in your current working folder"
-            nmap -sV -Pn "$ip" 2>&1 | tee -a /RESULTS/nmap_raw_results
+            nmap -O -sV -Pn "$ip" 2>&1 | tee -a /RESULTS/nmap_raw_results
         done < <(grep . "/RESULTS/$2")
     else
         printf "%s\n" "running scans, output will be written to nmap_raw_results in your current working folder"
-        nmap "$2" 2>&1 | tee -a /RESULTS/nmap_raw_results
+        nmap -O -sV -Pn "$2" 2>&1 | tee -a /RESULTS/nmap_raw_results
     fi
 fi
 
@@ -49,20 +49,20 @@ if [ "$1" = "masscan" ]; then
             masscan "$3" "$ip" 2>&1 | tee -a /RESULTS/masscan_raw_results
         done < <(grep . "/RESULTS/$2")
     else
-        printf "%s\n" "running scans, output will be written to nmap_raw_results in your current working folder"
+        printf "%s\n" "running scans, output will be written to masscan_raw_results in your current working folder"
         masscan "$3" "$2" 2>&1 | tee -a /RESULTS/masscan_raw_results
     fi
 fi
 
-if [ "$1" = "os_finger_printing" ]; then
+if [ "$1" = "ssh_audit" ]; then
     if [ -f "/RESULTS/$2" ]; then
 
         while read -r ip; do
-            printf "%s\n" "running scans, output will be written to nmap_raw_results in your current working folder"
-            nmap -O "$ip" 2>&1 | tee -a RESULTS/nmap_fingerprinting_raw_results
+            printf "%s\n" "running scans, output will be written to ssh_audit_results in your current working folder"
+            ssh-audit "$ip" 2>&1 | tee -a RESULTS/ssh_audit_results
         done < <(grep . "/RESULTS/$2")
     else
-        nmap -O "$2" >/RESULTS/nmap_fingerprinting_raw_results
+        ssh-audit "$2" 2>&1 | tee -a RESULTS/ssh_audit_results
     fi
 fi
 if [ "$1" = "check_for_ipv6_traffic" ]; then

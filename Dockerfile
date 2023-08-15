@@ -9,9 +9,10 @@ RUN apt update -y && apt upgrade -y && apt-get autoremove -y && apt-get clean -y
     jq \
     zaproxy \
     libpath-tiny-perl \
-    make
+    make \
+    ssh-audit
 
-RUN pip3 install mitm6 boto3
+RUN pip3 install mitm6 boto3 
 WORKDIR tools
 RUN curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip" && \
 unzip awscliv2.zip && \

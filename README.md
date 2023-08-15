@@ -48,6 +48,22 @@ Then you can pass the file name as command line argument to the tool.
 Output from the docker container will either be written to log files your current working directory, or
 sent to stdout and displayed in your CLI
 
+### SSH-AUDIT
+**Output File Name: ssh_audit_results**
+
+Example of running ssh-audit against an IP address:
+
+```bash
+docker run --rm -v "$(pwd)":/RESULTS berryliumsec/petusawo:latest \
+ssh_audit 192.168.1.250 
+```
+
+Example of running ssh-audit against a list of IP addresses and all ports:
+
+```bash
+docker run --rm -v "$(pwd)":/RESULTS berryliumsec/petusawo:latest \
+ssh_audit target_list
+```
 ### Masscan
 **Output File Name: masscan_raw_results**
 
