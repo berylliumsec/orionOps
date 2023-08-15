@@ -59,10 +59,10 @@ if [ "$1" = "ssh_audit" ]; then
 
         while read -r ip; do
             printf "%s\n" "running scans, output will be written to ssh_audit_results in your current working folder"
-            ssh-audit "$ip" 2>&1 | tee -a RESULTS/ssh_audit_results
+            ssh-audit "$ip" 2>&1 | tee -a /RESULTS/ssh_audit_results
         done < <(grep . "/RESULTS/$2")
     else
-        ssh-audit "$2" 2>&1 | tee -a RESULTS/ssh_audit_results
+        ssh-audit "$2" 2>&1 | tee -a /RESULTS/ssh_audit_results
     fi
 fi
 if [ "$1" = "check_for_ipv6_traffic" ]; then
