@@ -98,6 +98,9 @@ fi
 if [ "$1" = "resolve_fqdn" ]; then
     /scripts/bash/resolve_fqdn.sh "$2"
 fi
+if [ "$1" = "sort_ips" ]; then
+    /scripts/bash/sort_ips.sh "$2"
+fi
 if [ "$1" = "enumerate_aws_meta_data" ]; then
     python3 /scripts/python/enumerate_ec2_metadata_userdata.py
 fi
