@@ -1,6 +1,6 @@
 FROM kalilinux/kali-bleeding-edge:amd64
 ENV DEBIAN_FRONTEND noninteractive
-
+ENV PATH=$PATH:/usr/local/go/bin
 # hadolint ignore=DL3008,DL3009
 
 RUN apt update -y && apt upgrade -y && apt-get autoremove -y && apt-get clean -y && apt-get -y install --no-install-recommends \
@@ -10,10 +10,12 @@ RUN apt update -y && apt upgrade -y && apt-get autoremove -y && apt-get clean -y
     zaproxy \
     libpath-tiny-perl \
     make \
-    ssh-audit
+    ssh-audit 
 
 RUN pip3 install mitm6 boto3 
 WORKDIR tools
+RUN wget https://go.dev/dl/go1.21.0.linux-amd64.tar.gz && tar -C /usr/local -xzf go1.21.0.linux-amd64.tar.gz
+RUN go install -v github.com/projectdiscovery/nuclei/v2/cmd/nuclei@latest && export PATH=$PATH:/usr/local/go/bin
 RUN curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip" && \
 unzip awscliv2.zip && \
 ./aws/install

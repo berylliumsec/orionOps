@@ -65,6 +65,15 @@ if [ "$1" = "ssh_audit" ]; then
         ssh-audit "$2" 2>&1 | tee -a /RESULTS/ssh_audit_results
     fi
 fi
+if [ "$1" = "nuclei" ]; then
+    if [ -f "/RESULTS/$2" ]; then
+
+        printf "%s\n" "running scans, output will be written to nuclei_results in your current working folder"
+        nuclei -list "/RESULTS/$2" 2>&1 | tee -a /RESULTS/nuclei_results
+    else
+        nuclei "$2" 2>&1 | tee -a /RESULTS/nuclei
+    fi
+fi
 if [ "$1" = "check_for_ipv6_traffic" ]; then
     /scripts/bash/check_for_ipv6_traffic.sh "$2"
 fi

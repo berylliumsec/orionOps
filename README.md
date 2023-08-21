@@ -64,6 +64,23 @@ Example of running ssh-audit against a list of IP addresses and all ports:
 docker run --rm --network host -v "$(pwd)":/RESULTS berryliumsec/petusawo:latest \
 ssh_audit target_list
 ```
+
+### Nuclei
+**Output File Name: nuclei_results**
+
+Example of running nuclei against a single url:
+
+```bash
+docker run --rm --network host -v "$(pwd)":/RESULTS berryliumsec/petusawo:latest \
+nuclei https://xxxx.xx.om
+```
+
+Example of running nuclei against a list of urls:
+
+```bash
+docker run --rm --network host -v "$(pwd)":/RESULTS berryliumsec/petusawo:latest \
+nuclei target_list
+```
 ### Masscan
 **Output File Name: masscan_raw_results**
 
