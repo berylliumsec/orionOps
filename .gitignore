@@ -13,3 +13,5 @@ trash1
 tester.py
 *.csv
 nmap_raw_results
+entrypoint copy.sh
+nuclei

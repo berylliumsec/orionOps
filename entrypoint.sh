@@ -1,51 +1,54 @@
 #!/bin/bash
 export PATH=$PATH:/APP:/usr/local/go/bin:"$HOME"/go/bin
 
-if [ "$1" = "shell" ]; then
-    /bin/bash
-fi
-if [ "$1" = "zap_vuln_scan" ]; then
-    printf "passing args to zap: %s" "$2"
-    if [ -f "/RESULTS/$2" ]; then
-        counter=1
-        while read -r url; do
-            printf "%s\n" "running scans, results will be written to zap_processed_results_.json"
-            owasp-zap -cmd -quickurl "$url" -quickout "/RESULTS/zap_raw_results$counter.json" -silent -quickprogress &&
-            jq . "/RESULTS/zap_raw_results$counter.json" >>/RESULTS/zap_processed_results_.json
-            counter=$((counter + 1))
-        done < <(grep . "/RESULTS/$2")
-    else
-        printf "%s\n" "running scans, results will be written to zap_processed_results_.json"
-        owasp-zap -cmd -quickurl "$2" -quickout /RESULTS/zap_raw_results.json -silent -quickprogress &&
-        jq . /RESULTS/zap_raw_results.json >/RESULTS/zap_processed_results_.json
-    fi
-fi
-
-if [ "$1" = "nmap_vuln_scan" ]; then
-    printf "%s\n" "passing args to nmap: %s" "$2"
-    if [ -f "/RESULTS/$2" ]; then
-        printf "%s\n" "running scans, output will be written to nmap_raw_results in your current working folder"
-        while read -r ip; do
-            nmap -O -Pn -sV --script nmap-vulners/ "$ip" 2>&1 | tee -a /RESULTS/nmap_raw_results
-        done < <(grep . "/RESULTS/$2")
-    else
-        printf "%s\n" "running scans, output will be written to nmap_raw_results in your current working folder"
-        nmap -O -Pn -sV --script nmap-vulners/ "$2" 2>&1 | tee -a /RESULTS/nmap_raw_results
-    fi
-fi
-if [ "$1" = "nmap" ]; then
-    if [ -f "/RESULTS/$2" ]; then
+case "$1" in
+    shell)
+        /bin/bash
+        ;;
+    zap_vuln_scan)
+        printf "passing args to zap: %s" "$2"
+        output_file="zap_processed_results_.json"
+        urls_file="/RESULTS/$2"
+        if [ -f "$urls_file" ]; then
+            counter=1
+            while read -r url; do
+                printf "running scans, results will be written to %s\n" $output_file
+                owasp-zap -cmd -quickurl "$url" -quickout "/RESULTS/zap_raw_results$counter.json" -silent -quickprogress &&
+                jq . "/RESULTS/zap_raw_results$counter.json" >> "/RESULTS/$output_file"
+                counter=$((counter + 1))
+            done < <(grep . "$urls_file")
+        else
+            printf "running scans, results will be written to %s\n" $output_file
+            owasp-zap -cmd -quickurl "$2" -quickout /RESULTS/zap_raw_results.json -silent -quickprogress &&
+            jq . /RESULTS/zap_raw_results.json > "/RESULTS/$output_file"
+        fi
+        ;;
+    nmap_vuln_scan)
+        printf "passing args to nmap: %s" "$2"
+        output_file="nmap_raw_results"
+        ips_file="/RESULTS/$2"
+        if [ -f "$ips_file" ]; then
+            printf "running scans, output will be written to %s in your current working folder\n" $output_file
+            while read -r ip; do
+                nmap -O -Pn -sV --script nmap-vulners/ "$ip" 2>&1 | tee -a "/RESULTS/$output_file"
+            done < <(grep . "$ips_file")
+        else
+            printf "running scans, output will be written to %s in your current working folder\n" $output_file
+            nmap -O -Pn -sV --script nmap-vulners/ "$2" 2>&1 | tee -a "/RESULTS/$output_file"
+        fi
+        ;;
+    nmap)
+        if [ -f "/RESULTS/$2" ]; then
         while read -r ip; do
             printf "%s\n" "running scans, output will be written to nmap_raw_results in your current working folder"
-            nmap -O -sV -Pn "$ip" 2>&1 | tee -a /RESULTS/nmap_raw_results
+            nmap "$@" 2>&1 | tee -a /RESULTS/nmap_raw_results
         done < <(grep . "/RESULTS/$2")
     else
         printf "%s\n" "running scans, output will be written to nmap_raw_results in your current working folder"
         nmap -O -sV -Pn "$2" 2>&1 | tee -a /RESULTS/nmap_raw_results
     fi
-fi
-
-if [ "$1" = "masscan" ]; then
+    ;;
+    masscan)
     if [ -f "/RESULTS/$2" ]; then
         while read -r ip; do
             printf "%s\n" "running mass scans, output will be written to masscan_raw_results in your current working folder"
@@ -55,9 +58,8 @@ if [ "$1" = "masscan" ]; then
         printf "%s\n" "running scans, output will be written to masscan_raw_results in your current working folder"
         masscan "$3" "$2" 2>&1 | tee -a /RESULTS/masscan_raw_results
     fi
-fi
-
-if [ "$1" = "ssh_audit" ]; then
+    ;;
+    ssh_audit)
     if [ -f "/RESULTS/$2" ]; then
         
         while read -r ip; do
@@ -67,8 +69,8 @@ if [ "$1" = "ssh_audit" ]; then
     else
         ssh-audit "$2" 2>&1 | tee -a /RESULTS/ssh_audit_results
     fi
-fi
-if [ "$1" = "nuclei" ]; then
+    ;;
+    nuclei)
     if [ -f "/RESULTS/$2" ]; then
         
         printf "%s\n" "running scans, output will be written to nuclei_results in your current working folder"
@@ -76,79 +78,80 @@ if [ "$1" = "nuclei" ]; then
     else
         nuclei "$2" 2>&1 | tee -a /RESULTS/nuclei
     fi
-fi
-if [ "$1" = "check_for_ipv6_traffic" ]; then
+    ;;
+    check_for_ipv6_traffic)
     /scripts/bash/check_for_ipv6_traffic.sh "$2"
-fi
-if [ "$1" = "start_mitm6" ]; then
+    ;;
+    start_mitm6)
     /scripts/bash/start_mitm6.sh "$2" "$3"
-fi
-if [ "$1" = "start_nltm_relay_ipv6" ]; then
+    ;;
+    start_ntlm_relay_ipv6)
     /scripts/bash/start_nltm_relay_ipv6.sh "$2"
-fi
-if [ "$1" = "check_if_smb_signing_is_required" ]; then
+    ;;
+    check_if_smb_signing_is_required)
     /scripts/bash/check_if_smb_signing_is_required.sh "$2"
-fi
-if [ "$1" = "start_responder" ]; then
+    ;;
+    start_responder)
     /scripts/bash/start_responder.sh "$2"
-fi
-if [ "$1" = "start_nltm_relay_ipv4" ]; then
-    /scripts/bash/start_nltm_relay_ipv4.sh "$2"
-fi
-if [ "$1" = "check_and_exploit_null_smb_sessions" ]; then
-    /scripts/bash/check_and_exploit_null_smb_sessions.sh "$2" >>/RESULTS/smb_null_session_results
-fi
-if [ "$1" = "run_web_app_tests" ]; then
-    /scripts/bash/run_web_app_tests.sh "$2" "$3"
-fi
-if [ "$1" = "list_iscsi_targets" ]; then
-    /scripts/bash/list_iscsi_targets.sh "$2" "$3"
-fi
-if [ "$1" = "test_unauthenticated_iscsi_sessions" ]; then
-    /scripts/bash/test_unauthenticated_iscsi_sessions.sh "$2" "$3"
-fi
-if [ "$1" = "resolve_fqdn" ]; then
-    /scripts/bash/resolve_fqdn.sh "$2"
-fi
-if [ "$1" = "sort_ips" ]; then
-    /scripts/bash/sort_ips.sh "$2"
-fi
-if [ "$1" = "enumerate_aws_meta_data" ]; then
-    python3 /scripts/python/enumerate_ec2_metadata_userdata.py
-fi
-if [ "$1" = "dump_creds" ]; then
-    proxychains impacket-secretsdump -no-pass "$2"
-fi
-if [ "$1" = "list_smb_shares" ]; then
-    proxychains smbclient -L "$2" -U "$3"
-fi
-if [ "$1" = "access_smb" ]; then
-    proxychains smbclient "$2" -U "$3"
-fi
-if [ "$1" = "pass_hashes_wmi_exec" ]; then
-    impacket-wmiexec -hashes "$2" "$3"
-fi
-if [ "$1" == "discover_aws_services" ]; then
-    python3 /scripts/python/discover_aws_services.py --Region "$2"
-fi
-if [ "$1" == "enumerate_supported_ciphers" ]; then
-    nmap --script ssl-enum-ciphers -p "$2" "$3" >>"/RESULTS/$3-supported_ciphers"
-fi
-if [ "$1" == "check_rdp" ]; then
-    /APP/rdp-sec-check/rdp-sec-check.pl "$2" >>"/RESULTS/$2-rdp-check-results"
-fi
-if [ "$1" = "help" ]; then
-    printf "\n"
-    printf "zap_vuln_scan"
-    printf "\n"
-    printf "nmap_vuln_scan"
-    printf "\n"
-    printf "nmap"
-    printf "\n"
-    printf "check_and_exploit_null_smb_sessions"
-    printf "\n"
-    printf "os_finger_printing"
-    printf "\n"
-    printf "enumerate_aws_meta_data"
-fi
+    ;;
 
+    start_nltm_relay_ipv4)
+    /scripts/bash/start_nltm_relay_ipv4.sh "$2"
+    ;;
+
+    check_and_exploit_null_smb_sessions)
+        /scripts/bash/check_and_exploit_null_smb_sessions.sh "$2" >>/RESULTS/smb_null_session_results
+    ;;
+    run_web_app_tests)
+        /scripts/bash/run_web_app_tests.sh "$2" "$3"
+    ;;
+    list_iscsi_targets)
+        /scripts/bash/list_iscsi_targets.sh "$2" "$3"
+    ;;
+    test_unauthenticated_iscsi_sessions)
+        /scripts/bash/test_unauthenticated_iscsi_sessions.sh "$2" "$3"
+    ;;
+    resolve_fqdn)
+        /scripts/bash/resolve_fqdn.sh "$2"
+    ;;
+    sort_ips)
+        /scripts/bash/sort_ips.sh "$2"
+    ;;
+    enumerate_aws_meta_data)
+        python3 /scripts/python/enumerate_ec2_metadata_userdata.py
+    ;;
+    dump_creds)
+        proxychains impacket-secretsdump -no-pass "$2"
+    ;;
+    list_smb_shares)
+        proxychains smbclient -L "$2" -U "$3"
+    ;;
+    access_smb)
+        proxychains smbclient "$2" -U "$3"
+    ;;
+    pass_hashes_wmi_exec)
+        impacket-wmiexec -hashes "$2" "$3"
+    ;;
+    discover_aws_services)
+        python3 /scripts/python/discover_aws_services.py --Region "$2"
+    ;;
+    enumerate_supported_ciphers)
+        nmap --script ssl-enum-ciphers -p "$2" "$3" >>"/RESULTS/$3-supported_ciphers"
+    ;;
+    check_rdp)
+        /APP/rdp-sec-check/rdp-sec-check.pl "$2" >>"/RESULTS/$2-rdp-check-results"
+    ;;
+    help)
+        printf "Available commands:\n"
+        printf "  zap_vuln_scan\n"
+        printf "  nmap_vuln_scan\n"
+        printf "  nmap\n"
+        printf "  check_and_exploit_null_smb_sessions\n"
+        printf "  os_finger_printing\n"
+        printf "  enumerate_aws_meta_data\n"
+        ;;
+    *)
+        echo "Unknown command: $1"
+        exit 1
+        ;;
+esac
