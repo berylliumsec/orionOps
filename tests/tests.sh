@@ -13,7 +13,6 @@ aws_env_vars=<(env | grep -E '^AWS_')
 run_docker ssh_audit 192.168.1.250
 run_docker nuclei https://192.168.1.1
 run_docker masscan 192.168.1.250 -p80
-run_docker masscan target_list -p0-65535
 run_docker zap_vuln_scan https://192.168.1.1
 run_docker zap_vuln_scan
 run_docker nmap_vuln_scan 192.168.1.1
