@@ -1,6 +1,9 @@
 #!/bin/bash
-export PATH=$PATH:/APP
+export PATH=$PATH:/APP:/usr/local/go/bin:"$HOME"/go/bin
 
+if [ "$1" = "shell" ]; then
+    /bin/bash
+fi
 if [ "$1" = "zap_vuln_scan" ]; then
     printf "passing args to zap: %s" "$2"
     if [ -f "/RESULTS/$2" ]; then
@@ -8,13 +11,13 @@ if [ "$1" = "zap_vuln_scan" ]; then
         while read -r url; do
             printf "%s\n" "running scans, results will be written to zap_processed_results_.json"
             owasp-zap -cmd -quickurl "$url" -quickout "/RESULTS/zap_raw_results$counter.json" -silent -quickprogress &&
-                jq . "/RESULTS/zap_raw_results$counter.json" >>/RESULTS/zap_processed_results_.json
+            jq . "/RESULTS/zap_raw_results$counter.json" >>/RESULTS/zap_processed_results_.json
             counter=$((counter + 1))
         done < <(grep . "/RESULTS/$2")
     else
         printf "%s\n" "running scans, results will be written to zap_processed_results_.json"
         owasp-zap -cmd -quickurl "$2" -quickout /RESULTS/zap_raw_results.json -silent -quickprogress &&
-            jq . /RESULTS/zap_raw_results.json >/RESULTS/zap_processed_results_.json
+        jq . /RESULTS/zap_raw_results.json >/RESULTS/zap_processed_results_.json
     fi
 fi
 
@@ -56,7 +59,7 @@ fi
 
 if [ "$1" = "ssh_audit" ]; then
     if [ -f "/RESULTS/$2" ]; then
-
+        
         while read -r ip; do
             printf "%s\n" "running scans, output will be written to ssh_audit_results in your current working folder"
             ssh-audit "$ip" 2>&1 | tee -a /RESULTS/ssh_audit_results
@@ -67,7 +70,7 @@ if [ "$1" = "ssh_audit" ]; then
 fi
 if [ "$1" = "nuclei" ]; then
     if [ -f "/RESULTS/$2" ]; then
-
+        
         printf "%s\n" "running scans, output will be written to nuclei_results in your current working folder"
         nuclei -list "/RESULTS/$2" 2>&1 | tee -a /RESULTS/nuclei_results
     else

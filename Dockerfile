@@ -1,6 +1,6 @@
 FROM kalilinux/kali-bleeding-edge:amd64
 ENV DEBIAN_FRONTEND noninteractive
-ENV PATH=$PATH:/usr/local/go/bin
+ENV PATH=$PATH:/APP:/usr/local/go/bin:"$HOME"
 # hadolint ignore=DL3008,DL3009
 
 RUN apt update -y && apt upgrade -y && apt-get autoremove -y && apt-get clean -y && apt-get -y install --no-install-recommends \
@@ -25,10 +25,6 @@ export AWS_DEFAULT_REGION=us-east-1
 WORKDIR /
 RUN mkdir APP RESULTS
 WORKDIR /APP
-COPY entrypoint.sh ./
-COPY /scripts/ /scripts
-RUN chmod +x entrypoint.sh && echo "export PATH=$PATH:/APP" >> /root/.bashrc
-RUN chmod +x /scripts/bash/*
 RUN cd /usr/share/nmap/scripts/ && \
     git clone https://github.com/vulnersCom/nmap-vulners.git && \
     wget https://raw.githubusercontent.com/daviddias/node-dirbuster/master/lists/directory-list-2.3-medium.txt
@@ -36,4 +32,8 @@ RUN sed -i 's/127.0.0.1 9050/127.0.0.1 1080/g' /etc/proxychains4.conf
 RUN git clone https://github.com/CiscoCXSecurity/rdp-sec-check.git
 RUN yes | perl -MCPAN -e 'install Encoding::BER'
 RUN git clone https://github.com/robertdavidgraham/masscan && cd masscan && make &&  make install
+RUN export /go/bin && nuclei
+COPY entrypoint.sh ./
+COPY /scripts/ /scripts
+RUN chmod +x /scripts/bash/*
 ENTRYPOINT [ "bash", "entrypoint.sh" ]
