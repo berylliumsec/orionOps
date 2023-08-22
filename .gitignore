@@ -15,3 +15,6 @@ tester.py
 nmap_raw_results
 entrypoint copy.sh
 nuclei
+test_results
+*.log
+*results
