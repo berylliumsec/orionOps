@@ -16,7 +16,9 @@ RUN apt update -y && apt upgrade -y && apt-get autoremove -y && apt-get clean -y
     zaproxy \
     libpath-tiny-perl \
     make \
-    ssh-audit 
+    ssh-audit \
+    pciutils
+
 
 RUN pip3 install mitm6 boto3 
 

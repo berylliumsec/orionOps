@@ -41,11 +41,11 @@ case "$1" in
         if [ -f "/RESULTS/$2" ]; then
         while read -r ip; do
             printf "%s\n" "running scans, output will be written to nmap_raw_results in your current working folder"
-            nmap "$@" 2>&1 | tee -a /RESULTS/nmap_raw_results
+            nmap "${@:2}" 2>&1 | tee -a /RESULTS/nmap_raw_results
         done < <(grep . "/RESULTS/$2")
     else
         printf "%s\n" "running scans, output will be written to nmap_raw_results in your current working folder"
-        nmap -O -sV -Pn "$2" 2>&1 | tee -a /RESULTS/nmap_raw_results
+        nmap "${@:2}" 2>&1 | tee -a /RESULTS/nmap_raw_results
     fi
     ;;
     masscan)

@@ -326,6 +326,11 @@ docker run --network host -v "$(pwd)":/RESULTS berryliumsec/petusawo:latest chec
 
 Resolve IPs to FQDNS
 
+### Extract only hosts that are up:
+
+```bash
+sudo docker run --init --rm -v "$(pwd)":/RESULTS berryliumsec/petusawo:latest nmap -sn 192.168.1.0/24 | grep -oE "\b([0-9]{1,3}\.){3}[0-9]{1,3}\b"
+```
 **Output File Name: dns_resolution.log**
 
 ```bash
