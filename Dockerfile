@@ -6,7 +6,7 @@ LABEL version="1.0"
 LABEL description="Customized Kali Linux image by BerylliumSec"
 
 ENV DEBIAN_FRONTEND noninteractive
-ENV PATH=$PATH:/APP:/usr/local/go/bin:"$HOME"
+ENV PATH=$PATH:/APP:/usr/local/go/bin:"$HOME":/root/go/bin/
 
 # hadolint ignore=DL3008,DL3009
 RUN apt update -y && apt upgrade -y && apt-get autoremove -y && apt-get clean -y && apt-get -y install --no-install-recommends \
@@ -26,7 +26,6 @@ WORKDIR /tools
 
 # Install Go and Nuclei
 RUN wget https://go.dev/dl/go1.21.0.linux-amd64.tar.gz && tar -C /usr/local -xzf go1.21.0.linux-amd64.tar.gz
-ENV PATH=$PATH:/usr/local/go/bin
 RUN go install -v github.com/projectdiscovery/nuclei/v2/cmd/nuclei@latest
 
 # Install AWS CLI
@@ -53,7 +52,7 @@ RUN cpan -T -i Encoding::BER # Install Perl module
 
 # Install Masscan
 RUN git clone https://github.com/robertdavidgraham/masscan && cd masscan && make &&  make install
-
+RUN nuclei -update-templates
 # Copy entrypoint script and scripts
 COPY entrypoint.sh /entrypoint.sh
 COPY scripts/ /scripts/

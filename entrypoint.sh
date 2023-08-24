@@ -30,7 +30,7 @@ case "$1" in
         if [ -f "$ips_file" ]; then
             printf "running scans, output will be written to %s in your current working folder\n" $output_file
             while read -r ip; do
-                nmap -O -Pn -sV --script nmap-vulners/ "$ip" 2>&1 | tee -a "/RESULTS/$output_file"
+                nmap --script nmap-vulners/ -O -Pn -sV "$ip" 2>&1 | tee -a "/RESULTS/$output_file"
             done < <(grep . "$ips_file")
         else
             printf "running scans, output will be written to %s in your current working folder\n" $output_file
