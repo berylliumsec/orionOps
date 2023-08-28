@@ -31,17 +31,19 @@ case "$1" in
             printf "running scans, output will be written to %s in your current working folder\n" $output_file
             while read -r ip; do
                 nmap --script nmap-vulners/ -O -Pn -sV "$ip" 2>&1 | tee -a "/RESULTS/$output_file"
-            done < <(grep . "$ips_file")
+            done < <(grep . "/RESULTS/$2")
         else
             printf "running scans, output will be written to %s in your current working folder\n" $output_file
             nmap -O -Pn -sV --script nmap-vulners/ "$2" 2>&1 | tee -a "/RESULTS/$output_file"
         fi
         ;;
     nmap)
+    
         if [ -f "/RESULTS/$2" ]; then
+        printf "passing args to nmap: %s" "$2"
         while read -r ip; do
             printf "%s\n" "running scans, output will be written to nmap_raw_results in your current working folder"
-            nmap "${@:2}" 2>&1 | tee -a /RESULTS/nmap_raw_results
+            nmap "$ip" 2>&1 | tee -a /RESULTS/nmap_raw_results
         done < <(grep . "/RESULTS/$2")
     else
         printf "%s\n" "running scans, output will be written to nmap_raw_results in your current working folder"
@@ -77,6 +79,17 @@ case "$1" in
         nuclei -list "/RESULTS/$2" 2>&1 | tee -a /RESULTS/nuclei_results
     else
         nuclei "$2" 2>&1 | tee -a /RESULTS/nuclei
+    fi
+    ;;
+    rpc_dump)
+        if [ -f "/RESULTS/$2" ]; then
+        
+        while read -r ip; do
+            printf "%s\n" "running scans, output will be written to rpc_dump_results in your current working folder"
+            impacket-rpcdump "$ip" 2>&1 | tee -a /RESULTS/rpc_dump_results
+        done < <(grep . "/RESULTS/$2")
+    else
+         impacket-rpcdump "$2" 2>&1 | tee -a /RESULTS/rpc_dump_results
     fi
     ;;
     check_for_ipv6_traffic)
