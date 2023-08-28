@@ -76,9 +76,9 @@ case "$1" in
     if [ -f "/RESULTS/$2" ]; then
         
         printf "%s\n" "running scans, output will be written to nuclei_results in your current working folder"
-        nuclei -list "/RESULTS/$2" 2>&1 | tee -a /RESULTS/nuclei_results
+        nuclei -list "/RESULTS/$2" "${@:2}"  2>&1 | tee -a /RESULTS/nuclei_results
     else
-        nuclei "$2" 2>&1 | tee -a /RESULTS/nuclei
+        nuclei "$2" "${@:2}" 2>&1 | tee -a /RESULTS/nuclei_results
     fi
     ;;
     rpc_dump)
