@@ -68,18 +68,18 @@ ssh_audit target_list
 ### Nuclei
 **Output File Name: nuclei_results**
 
-Example of running nuclei against a single url:
+Example of running nuclei against a single url using the http templates:
 
 ```bash
 docker run --rm --network host -v "$(pwd)":/RESULTS berryliumsec/petusawo:latest \
-nuclei https://xxxx.xx.om
+nuclei https://xxxx.xx.om -t http/
 ```
 
-Example of running nuclei against a list of urls:
+Example of running nuclei against a list of urls using the http templates:
 
 ```bash
 docker run --rm --network host -v "$(pwd)":/RESULTS berryliumsec/petusawo:latest \
-nuclei target_list
+nuclei target_list -t http/
 ```
 ### Masscan
 **Output File Name: masscan_raw_results**
