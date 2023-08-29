@@ -3,11 +3,12 @@
 # Function to run docker commands to keep things DRY (Don't Repeat Yourself)
 run_docker() {
     local args=("$@")
-    docker run --rm --network host -v "$(pwd)":/RESULTS berryliumsec/petusawo:latest "${args[@]}"
+    docker run --rm  -it --network host -v "$(pwd)":/RESULTS berryliumsec/petusawo:latest "${args[@]}"
 }
 
 
 # Execute commands
+run_docker extract_info_dc 192.168.1.159
 run_docker ssh_audit 192.168.1.250
 run_docker nuclei https://192.168.1.198 -t templates/http/ 
 run_docker masscan 192.168.1.250 -p80
