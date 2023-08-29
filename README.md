@@ -61,7 +61,7 @@ Example of attempting to extract information from a list of Domain Controllers:
 
 ```bash
 docker run --rm -it --network host -v "$(pwd)":/RESULTS berryliumsec/petusawo:latest \
- enumerate_dc target_list
+extract_info_dc target_list
 ```
 ### SSH-AUDIT
 **Output File Name: ssh_audit_results**
