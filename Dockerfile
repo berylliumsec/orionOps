@@ -56,6 +56,8 @@ RUN nuclei -update-templates
 # Copy entrypoint script and scripts
 COPY entrypoint.sh /entrypoint.sh
 COPY scripts/ /scripts/
-RUN chmod +x /scripts/bash/*
-
-ENTRYPOINT [ "bash", "/entrypoint.sh" ]
+RUN chmod +x /scripts/bash/* && chmod +x /entrypoint.sh
+ENV TINI_VERSION v0.19.0
+ADD https://github.com/krallin/tini/releases/download/${TINI_VERSION}/tini /tini
+RUN chmod +x /tini
+ENTRYPOINT ["/tini", "--", "bash", "/entrypoint.sh"]

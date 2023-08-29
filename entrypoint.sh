@@ -1,10 +1,18 @@
 #!/bin/bash
+terminate() {
+    echo "Caught SIGINT signal!"
+    # Kill any child processes
+    pkill -P $$
+    exit 1
+}
+
+trap 'terminate' SIGINT
 export PATH=$PATH:/APP:/usr/local/go/bin:"$HOME"/go/bin
 
 case "$1" in
     shell)
         /bin/bash
-        ;;
+    ;;
     zap_vuln_scan)
         printf "passing args to zap: %s" "$2"
         output_file="zap_processed_results_.json"
@@ -22,7 +30,7 @@ case "$1" in
             owasp-zap -cmd -quickurl "$2" -quickout /RESULTS/zap_raw_results.json -silent -quickprogress &&
             jq . /RESULTS/zap_raw_results.json > "/RESULTS/$output_file"
         fi
-        ;;
+    ;;
     nmap_vuln_scan)
         printf "passing args to nmap: %s" "$2"
         output_file="nmap_raw_results"
@@ -36,82 +44,101 @@ case "$1" in
             printf "running scans, output will be written to %s in your current working folder\n" $output_file
             nmap -O -Pn -sV --script nmap-vulners/ "$2" 2>&1 | tee -a "/RESULTS/$output_file"
         fi
-        ;;
+    ;;
     nmap)
-    
+        
         if [ -f "/RESULTS/$2" ]; then
-        printf "passing args to nmap: %s" "$2"
-        while read -r ip; do
+            printf "passing args to nmap: %s" "$2"
+            while read -r ip; do
+                printf "%s\n" "running scans, output will be written to nmap_raw_results in your current working folder"
+                nmap "$ip" 2>&1 | tee -a /RESULTS/nmap_raw_results
+            done < <(grep . "/RESULTS/$2")
+        else
             printf "%s\n" "running scans, output will be written to nmap_raw_results in your current working folder"
-            nmap "$ip" 2>&1 | tee -a /RESULTS/nmap_raw_results
-        done < <(grep . "/RESULTS/$2")
-    else
-        printf "%s\n" "running scans, output will be written to nmap_raw_results in your current working folder"
-        nmap "${@:2}" 2>&1 | tee -a /RESULTS/nmap_raw_results
-    fi
+            nmap "${@:2}" 2>&1 | tee -a /RESULTS/nmap_raw_results
+        fi
     ;;
     masscan)
-    if [ -f "/RESULTS/$2" ]; then
-        while read -r ip; do
-            printf "%s\n" "running mass scans, output will be written to masscan_raw_results in your current working folder"
-            masscan "$3" "$ip" 2>&1 | tee -a /RESULTS/masscan_raw_results
-        done < <(grep . "/RESULTS/$2")
-    else
-        printf "%s\n" "running scans, output will be written to masscan_raw_results in your current working folder"
-        masscan "$3" "$2" 2>&1 | tee -a /RESULTS/masscan_raw_results
-    fi
+        if [ -f "/RESULTS/$2" ]; then
+            while read -r ip; do
+                printf "%s\n" "running mass scans, output will be written to masscan_raw_results in your current working folder"
+                masscan "$3" "$ip" 2>&1 | tee -a /RESULTS/masscan_raw_results
+            done < <(grep . "/RESULTS/$2")
+        else
+            printf "%s\n" "running scans, output will be written to masscan_raw_results in your current working folder"
+            masscan "$3" "$2" 2>&1 | tee -a /RESULTS/masscan_raw_results
+        fi
     ;;
     ssh_audit)
-    if [ -f "/RESULTS/$2" ]; then
+        if [ -f "/RESULTS/$2" ]; then
+            
+            while read -r ip; do
+                printf "%s\n" "running scans, output will be written to ssh_audit_results in your current working folder"
+                ssh-audit "$ip" 2>&1 | tee -a /RESULTS/ssh_audit_results
+            done < <(grep . "/RESULTS/$2")
+        else
+            ssh-audit "$2" 2>&1 | tee -a /RESULTS/ssh_audit_results
+        fi
+    ;;
+    extract_info_dc)
         
-        while read -r ip; do
-            printf "%s\n" "running scans, output will be written to ssh_audit_results in your current working folder"
-            ssh-audit "$ip" 2>&1 | tee -a /RESULTS/ssh_audit_results
-        done < <(grep . "/RESULTS/$2")
-    else
-        ssh-audit "$2" 2>&1 | tee -a /RESULTS/ssh_audit_results
-    fi
+        if [ -f "/RESULTS/$2" ]; then
+            
+            while read -r ip; do
+                printf "%s\n" "running scans, output will be written to dc_anonymous_enumeration_results in your current working folder"
+                /scripts/bash/extract_info_dc.sh "$ip" 2>&1 | tee -a /RESULTS/dc_anonymous_enumeration_temp
+                
+            done < <(grep . "/RESULTS/$2")
+            # Remove ANSI escape codes from input.txt and save the clean content to output.txt
+            sed -r "s/\x1B\[([0-9]{1,2}(;[0-9]{1,2})*)?[mGK]//g" /RESULTS/dc_anonymous_enumeration_temp > /RESULTS/dc_anonymous_enumeration_results
+            rm /RESULTS/dc_anonymous_enumeration_temp
+        else
+            printf "%s\n" "running scans, output will be written to dc_anonymous_enumeration_results in your current working folder"
+            /scripts/bash/extract_info_dc.sh "$2" 2>&1 | tee -a /RESULTS/dc_anonymous_enumeration_results_temp
+            sed -r "s/\x1B\[([0-9]{1,2}(;[0-9]{1,2})*)?[mGK]//g" /RESULTS/dc_anonymous_enumeration_results_temp > /RESULTS/dc_anonymous_enumeration_results
+            rm /RESULTS/dc_anonymous_enumeration_results_temp
+        fi
     ;;
     nuclei)
-    if [ -f "/RESULTS/$2" ]; then
-        
-        printf "%s\n" "running scans, output will be written to nuclei_results in your current working folder"
-        nuclei -list "/RESULTS/$2" "${@:2}"  2>&1 | tee -a /RESULTS/nuclei_results
-    else
-        nuclei "$2" "${@:2}" 2>&1 | tee -a /RESULTS/nuclei_results
-    fi
+        if [ -f "/RESULTS/$2" ]; then
+            
+            printf "%s\n" "running scans, output will be written to nuclei_results in your current working folder"
+            nuclei -list "/RESULTS/$2" "${@:2}"  2>&1 | tee -a /RESULTS/nuclei_results
+        else
+            nuclei "$2" "${@:2}" 2>&1 | tee -a /RESULTS/nuclei_results
+        fi
     ;;
     rpc_dump)
         if [ -f "/RESULTS/$2" ]; then
-        
-        while read -r ip; do
-            printf "%s\n" "running scans, output will be written to rpc_dump_results in your current working folder"
-            impacket-rpcdump "$ip" 2>&1 | tee -a /RESULTS/rpc_dump_results
-        done < <(grep . "/RESULTS/$2")
-    else
-         impacket-rpcdump "$2" 2>&1 | tee -a /RESULTS/rpc_dump_results
-    fi
+            
+            while read -r ip; do
+                printf "%s\n" "running scans, output will be written to rpc_dump_results in your current working folder"
+                impacket-rpcdump "$ip" 2>&1 | tee -a /RESULTS/rpc_dump_results
+            done < <(grep . "/RESULTS/$2")
+        else
+            impacket-rpcdump "$2" 2>&1 | tee -a /RESULTS/rpc_dump_results
+        fi
     ;;
     check_for_ipv6_traffic)
-    /scripts/bash/check_for_ipv6_traffic.sh "$2"
+        /scripts/bash/check_for_ipv6_traffic.sh "$2"
     ;;
     start_mitm6)
-    /scripts/bash/start_mitm6.sh "$2" "$3"
+        /scripts/bash/start_mitm6.sh "$2" "$3"
     ;;
     start_ntlm_relay_ipv6)
-    /scripts/bash/start_nltm_relay_ipv6.sh "$2"
+        /scripts/bash/start_nltm_relay_ipv6.sh "$2"
     ;;
     check_if_smb_signing_is_required)
-    /scripts/bash/check_if_smb_signing_is_required.sh "$2"
+        /scripts/bash/check_if_smb_signing_is_required.sh "$2"
     ;;
     start_responder)
-    /scripts/bash/start_responder.sh "$2"
+        /scripts/bash/start_responder.sh "$2"
     ;;
-
+    
     start_nltm_relay_ipv4)
-    /scripts/bash/start_nltm_relay_ipv4.sh "$2"
+        /scripts/bash/start_nltm_relay_ipv4.sh "$2"
     ;;
-
+    
     check_and_exploit_null_smb_sessions)
         /scripts/bash/check_and_exploit_null_smb_sessions.sh "$2" >>/RESULTS/smb_null_session_results
     ;;
@@ -162,9 +189,9 @@ case "$1" in
         printf "  check_and_exploit_null_smb_sessions\n"
         printf "  os_finger_printing\n"
         printf "  enumerate_aws_meta_data\n"
-        ;;
+    ;;
     *)
         echo "Unknown command: $1"
         exit 1
-        ;;
+    ;;
 esac

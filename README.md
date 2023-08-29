@@ -48,20 +48,34 @@ Then you can pass the file name as command line argument to the tool.
 Output from the docker container will either be written to log files your current working directory, or
 sent to stdout and displayed in your CLI
 
+### Attempt to enumerate Domain Controller anonymously
+**Output File Name: dc_anonymous_enumeration_results**
+
+```bash
+docker run --rm -it --network host -v "$(pwd)":/RESULTS berryliumsec/petusawo:latest \
+extract_info_dc 192.168.1.159 
+```
+
+Example of attempting to extract information from a list of Domain Controllers:
+
+```bash
+docker run --rm -it --network host -v "$(pwd)":/RESULTS berryliumsec/petusawo:latest \
+ enumerate_dc target_list
+```
 ### SSH-AUDIT
 **Output File Name: ssh_audit_results**
 
 Example of running ssh-audit against an IP address:
 
 ```bash
-docker run --rm --network host -v "$(pwd)":/RESULTS berryliumsec/petusawo:latest \
+docker run --rm -it --network host -v "$(pwd)":/RESULTS berryliumsec/petusawo:latest \
 ssh_audit 192.168.1.250 
 ```
 
-Example of running ssh-audit against a list of IP addresses and all ports:
+Example of running ssh-audit against a list of IP addresses:
 
 ```bash
-docker run --rm --network host -v "$(pwd)":/RESULTS berryliumsec/petusawo:latest \
+docker run --rm -it --network host -v "$(pwd)":/RESULTS berryliumsec/petusawo:latest \
 ssh_audit target_list
 ```
 
@@ -71,14 +85,14 @@ ssh_audit target_list
 Example of running nuclei against a single url using the http templates:
 
 ```bash
-docker run --rm --network host -v "$(pwd)":/RESULTS berryliumsec/petusawo:latest \
+docker run --rm -it --network host -v "$(pwd)":/RESULTS berryliumsec/petusawo:latest \
 nuclei https://xxxx.xx.om -t http/
 ```
 
 Example of running nuclei against a list of urls using the http templates:
 
 ```bash
-docker run --rm --network host -v "$(pwd)":/RESULTS berryliumsec/petusawo:latest \
+docker run --rm -it --network host -v "$(pwd)":/RESULTS berryliumsec/petusawo:latest \
 nuclei target_list -t http/
 ```
 ### Masscan
@@ -87,14 +101,14 @@ nuclei target_list -t http/
 Example of running masscan against an IP address and a single port:
 
 ```bash
-docker run --rm --network host -v "$(pwd)":/RESULTS berryliumsec/petusawo:latest \
+docker run --rm -it --network host -v "$(pwd)":/RESULTS berryliumsec/petusawo:latest \
 masscan 192.168.1.250 \-p80
 ```
 
 Example of running masscan against a list of IP addresses and all ports:
 
 ```bash
-docker run --rm --network host -v "$(pwd)":/RESULTS berryliumsec/petusawo:latest \
+docker run --rm -it --network host -v "$(pwd)":/RESULTS berryliumsec/petusawo:latest \
 masscan target_list \-p0\-65535
 ```
 ### ZAP
@@ -104,7 +118,7 @@ To run zap against a url, run the following command, replacing the url with the 
 The results will be outputted to whatever directory you specify.
 
 ```bash
-docker run --rm --network host -v "$(pwd)":/RESULTS berryliumsec/petusawo:latest \
+docker run --rm -it --network host -v "$(pwd)":/RESULTS berryliumsec/petusawo:latest \
 zap_vuln_scan https://yourtarget.com/
 ```
 
@@ -112,7 +126,7 @@ To run Zap against a list of URLs, place the urls in file named urls.txt in the 
 on a new line (the last line must be terminated with a new line). Run:
 
 ```bash
-docker run --rm --network host -v "$(pwd)":/RESULTS berryliumsec/petusawo:latest \
+docker run --rm -it --network host -v "$(pwd)":/RESULTS berryliumsec/petusawo:latest \
 zap_vuln_scan your_list.txt
 ```
 
@@ -123,7 +137,7 @@ zap_vuln_scan your_list.txt
 Example of running NMAP's vulnerability scan against an IP address:
 
 ```bash
-docker run --rm --network host -v "$(pwd)":/RESULTS berryliumsec/petusawo:latest \
+docker run --rm -it --network host -v "$(pwd)":/RESULTS berryliumsec/petusawo:latest \
 nmap_vuln_scan 000.00.000.000
 ```
 
@@ -133,7 +147,7 @@ the list in a file named ips.txt in the `PWD` with each IP address on a new line
 Run:
 
 ```bash
-docker run --rm --network host -v "$(pwd)":/RESULTS berryliumsec/petusawo:latest \
+docker run --rm -it --network host -v "$(pwd)":/RESULTS berryliumsec/petusawo:latest \
 nmap_vuln_scan your_list.txt
 ```
 

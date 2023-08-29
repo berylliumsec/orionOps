@@ -3,7 +3,7 @@
 .vscode
 *.pyc*
 .coverage
-
+dc_anonymous_enumeration_results_temp
 .jython_cache
 .pytest_cache
 trash
@@ -18,3 +18,4 @@ nuclei
 test_results
 *.log
 *results
+targets
