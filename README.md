@@ -154,7 +154,7 @@ nmap_vuln_scan your_list.txt
 
 ### General WEB Application Scans
 
-**Output File Names: Multiple files ending in `.log`**
+**Output File Names: Multiple files with `.log` extensions**
 
 All web application scans can be run through an optional proxy server such as burpsuite.
 If no proxy is being used, the option can be ignored.
