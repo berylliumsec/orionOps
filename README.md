@@ -185,7 +185,7 @@ screen -r tshark
 docker run --rm --network host -it -v "$(pwd)":/RESULTS berryliumsec/petusawo:latest check_if_smb_signing_is_required smb_targets.txt
 ```
 
-### Exploit SMB signing not required via DNS6 poisoning and NTLM relay.
+### Exploit "SMB signing not required" via DNS6 poisoning and NTLM relay.
 
 **Output: CLI**
 
@@ -263,7 +263,7 @@ docker run --rm -it --network host -v "$(pwd)":/RESULTS berryliumsec/petusawo:la
 ```
 
 
-### Exploit SMB signing not required via DNS poisoning and NTLM relay.
+### Exploit "SMB signing not required" via DNS poisoning and NTLM relay.
 
 **Output: CLI**
 
