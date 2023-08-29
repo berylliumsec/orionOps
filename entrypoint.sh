@@ -9,6 +9,42 @@ terminate() {
 trap 'terminate' SIGINT
 export PATH=$PATH:/APP:/usr/local/go/bin:"$HOME"/go/bin
 
+print_help() {
+    echo "Available commands and their descriptions:"
+    echo "  shell                           : Start a new shell session"
+    echo "  zap_vuln_scan                   : Run a vulnerability scan using ZAP"
+    echo "  nmap_vuln_scan                  : Execute a vulnerability scan using nmap"
+    echo "  nmap                            : Run a standard nmap scan"
+    echo "  masscan                         : Execute a scan using masscan"
+    echo "  ssh_audit                       : Audit SSH for potential vulnerabilities"
+    echo "  extract_info_dc                 : Extract information from domain controllers"
+    echo "  nuclei                          : Scan using the Nuclei tool"
+    echo "  rpc_dump                        : Dump RPC information"
+    echo "  check_for_ipv6_traffic          : Check for IPv6 traffic in the network"
+    echo "  start_mitm6                     : Start a man-in-the-middle attack on IPv6"
+    echo "  start_ntlm_relay_ipv6           : Start an NTLM relay attack on IPv6"
+    echo "  check_if_smb_signing_is_required: Check if SMB signing is enforced"
+    echo "  start_responder                 : Start the Responder tool for LLMNR, NBT-NS and MDNS poisoning"
+    echo "  start_nltm_relay_ipv4           : Start an NTLM relay attack on IPv4"
+    echo "  check_and_exploit_null_smb_sessions: Check and exploit null SMB sessions"
+    echo "  run_web_app_tests               : Run a series of web application tests"
+    echo "  list_iscsi_targets              : List available iSCSI targets"
+    echo "  test_unauthenticated_iscsi_sessions: Test for unauthenticated iSCSI sessions"
+    echo "  resolve_fqdn                    : Resolve a Fully Qualified Domain Name"
+    echo "  sort_ips                        : Sort IP addresses"
+    echo "  enumerate_aws_meta_data         : Enumerate AWS meta-data"
+    echo "  dump_creds                      : Dump credentials using Impacket's secretsdump"
+    echo "  list_smb_shares                 : List available SMB shares"
+    echo "  access_smb                      : Access an SMB share"
+    echo "  pass_hashes_wmi_exec            : Execute commands using passed hashes with WMI"
+    echo "  discover_aws_services           : Discover AWS services for a specified region"
+    echo "  enumerate_supported_ciphers     : Enumerate supported ciphers on a target port"
+    echo "  check_rdp                       : Check the security of an RDP connection"
+    echo "  help                            : Display this help message"
+}
+
+
+
 case "$1" in
     shell)
         /bin/bash
@@ -182,16 +218,11 @@ case "$1" in
         /APP/rdp-sec-check/rdp-sec-check.pl "$2" >>"/RESULTS/$2-rdp-check-results"
     ;;
     help)
-        printf "Available commands:\n"
-        printf "  zap_vuln_scan\n"
-        printf "  nmap_vuln_scan\n"
-        printf "  nmap\n"
-        printf "  check_and_exploit_null_smb_sessions\n"
-        printf "  os_finger_printing\n"
-        printf "  enumerate_aws_meta_data\n"
+    print_help
     ;;
     *)
         echo "Unknown command: $1"
+        print_help
         exit 1
     ;;
 esac
