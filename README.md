@@ -13,6 +13,7 @@ up various important commands into bash scripts.
 - mitm6
 - masscan
 - rdp-sec-check.pl
+- nuclei
 
   
 ## Getting Started
