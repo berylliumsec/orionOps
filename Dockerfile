@@ -20,7 +20,7 @@ RUN apt update -y && apt upgrade -y && apt-get autoremove -y && apt-get clean -y
     pciutils
 
 
-RUN pip3 install mitm6 boto3 
+RUN pip3 install mitm6 boto3 bloodhound
 
 WORKDIR /tools
 
