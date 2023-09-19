@@ -9,6 +9,7 @@ function Colorize-Output {
             $phrases = @{
                 'AccessAllowed' = 'Green'
                 'GenericAll'          = 'Red'
+                'WriteDacl' = 'Yellow'
             }
 
             $pattern = '(' + (($phrases.Keys | ForEach-Object { [regex]::Escape($_) }) -join '|') + ')'
