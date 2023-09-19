@@ -1,5 +1,5 @@
 clear
-Import-Module 'PowerView.ps1'
+Import-Module 'C:\Users\dj\Downloads\Recon\PowerView.ps1'
 function Colorize-Output {
     process {
         $_ | ForEach-Object {
@@ -8,8 +8,7 @@ function Colorize-Output {
             # Define phrases and their colors
             $phrases = @{
                 'AccessAllowed' = 'Green'
-                'None'          = 'Red'
-                'GenericAll'          = 'Blue'
+                'GenericAll'          = 'Red'
             }
 
             $pattern = '(' + (($phrases.Keys | ForEach-Object { [regex]::Escape($_) }) -join '|') + ')'
