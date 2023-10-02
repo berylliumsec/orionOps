@@ -2,6 +2,6 @@ version: "3"
 
 services:
   app:
-    image: berryliumsec/petusawo:latest
+    image: berylliumsec/petusawo:latest
     build: .
     network_mode: host

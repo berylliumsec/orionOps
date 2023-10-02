@@ -1,4 +1,4 @@
-# PETUSAWO
+# OrionOps
 
 The purpose of the project is to make it easier to perform penetration testing by wrapping
 up various important commands into bash scripts.
@@ -53,14 +53,14 @@ sent to stdout and displayed in your CLI
 **Output File Name: dc_anonymous_enumeration_results**
 
 ```bash
-docker run --rm -it --network host -v "$(pwd)":/RESULTS berryliumsec/petusawo:latest \
+docker run --rm -it --network host -v "$(pwd)":/RESULTS berylliumsec/orionops:latest \
 extract_info_dc 192.168.1.159 
 ```
 
 Example of attempting to extract information from a list of Domain Controllers:
 
 ```bash
-docker run --rm -it --network host -v "$(pwd)":/RESULTS berryliumsec/petusawo:latest \
+docker run --rm -it --network host -v "$(pwd)":/RESULTS berylliumsec/orionops:latest \
 extract_info_dc target_list
 ```
 ### SSH-AUDIT
@@ -69,14 +69,14 @@ extract_info_dc target_list
 Example of running ssh-audit against an IP address:
 
 ```bash
-docker run --rm -it --network host -v "$(pwd)":/RESULTS berryliumsec/petusawo:latest \
+docker run --rm -it --network host -v "$(pwd)":/RESULTS berylliumsec/orionops:latest \
 ssh_audit 192.168.1.250 
 ```
 
 Example of running ssh-audit against a list of IP addresses:
 
 ```bash
-docker run --rm -it --network host -v "$(pwd)":/RESULTS berryliumsec/petusawo:latest \
+docker run --rm -it --network host -v "$(pwd)":/RESULTS berylliumsec/orionops:latest \
 ssh_audit target_list
 ```
 
@@ -86,14 +86,14 @@ ssh_audit target_list
 Example of running nuclei against a single url using the http templates:
 
 ```bash
-docker run --rm -it --network host -v "$(pwd)":/RESULTS berryliumsec/petusawo:latest \
+docker run --rm -it --network host -v "$(pwd)":/RESULTS berylliumsec/orionops:latest \
 nuclei https://xxxx.xx.om -t http/
 ```
 
 Example of running nuclei against a list of urls using the http templates:
 
 ```bash
-docker run --rm -it --network host -v "$(pwd)":/RESULTS berryliumsec/petusawo:latest \
+docker run --rm -it --network host -v "$(pwd)":/RESULTS berylliumsec/orionops:latest \
 nuclei target_list -t http/
 ```
 ### Masscan
@@ -102,14 +102,14 @@ nuclei target_list -t http/
 Example of running masscan against an IP address and a single port:
 
 ```bash
-docker run --rm -it --network host -v "$(pwd)":/RESULTS berryliumsec/petusawo:latest \
+docker run --rm -it --network host -v "$(pwd)":/RESULTS berylliumsec/orionops:latest \
 masscan 192.168.1.250 \-p80
 ```
 
 Example of running masscan against a list of IP addresses and all ports:
 
 ```bash
-docker run --rm -it --network host -v "$(pwd)":/RESULTS berryliumsec/petusawo:latest \
+docker run --rm -it --network host -v "$(pwd)":/RESULTS berylliumsec/orionops:latest \
 masscan target_list \-p0\-65535
 ```
 ### ZAP
@@ -119,7 +119,7 @@ To run zap against a url, run the following command, replacing the url with the 
 The results will be outputted to whatever directory you specify.
 
 ```bash
-docker run --rm -it --network host -v "$(pwd)":/RESULTS berryliumsec/petusawo:latest \
+docker run --rm -it --network host -v "$(pwd)":/RESULTS berylliumsec/orionops:latest \
 zap_vuln_scan https://yourtarget.com/
 ```
 
@@ -127,7 +127,7 @@ To run Zap against a list of URLs, place the urls in file named urls.txt in the 
 on a new line (the last line must be terminated with a new line). Run:
 
 ```bash
-docker run --rm -it --network host -v "$(pwd)":/RESULTS berryliumsec/petusawo:latest \
+docker run --rm -it --network host -v "$(pwd)":/RESULTS berylliumsec/orionops:latest \
 zap_vuln_scan your_list.txt
 ```
 
@@ -138,7 +138,7 @@ zap_vuln_scan your_list.txt
 Example of running NMAP's vulnerability scan against an IP address:
 
 ```bash
-docker run --rm -it --network host -v "$(pwd)":/RESULTS berryliumsec/petusawo:latest \
+docker run --rm -it --network host -v "$(pwd)":/RESULTS berylliumsec/orionops:latest \
 nmap_vuln_scan 000.00.000.000
 ```
 
@@ -148,7 +148,7 @@ the list in a file named ips.txt in the `PWD` with each IP address on a new line
 Run:
 
 ```bash
-docker run --rm -it --network host -v "$(pwd)":/RESULTS berryliumsec/petusawo:latest \
+docker run --rm -it --network host -v "$(pwd)":/RESULTS berylliumsec/orionops:latest \
 nmap_vuln_scan your_list.txt
 ```
 
@@ -160,7 +160,7 @@ All web application scans can be run through an optional proxy server such as bu
 If no proxy is being used, the option can be ignored.
 
 ```bash
-docker run --rm --network host -v "$(pwd)":/RESULTS berryliumsec/petusawo:latest \
+docker run --rm --network host -v "$(pwd)":/RESULTS berylliumsec/orionops:latest \
 run_web_app_tests target_ip_address_or_list_of_ips optional_proxy_address
 ```
 
@@ -169,7 +169,7 @@ run_web_app_tests target_ip_address_or_list_of_ips optional_proxy_address
 **Output: CLI**
 
 ```bash
-screen -S tshark -d -m docker run -it --rm --network host -v "$(pwd)":/RESULTS berryliumsec/petusawo:latest \
+screen -S tshark -d -m docker run -it --rm --network host -v "$(pwd)":/RESULTS berylliumsec/orionops:latest \
 check_for_ipv6_traffic network_interface to listen on
 ```
 
@@ -182,7 +182,7 @@ screen -r tshark
 **Output: CLI**
 
 ```bash
-docker run --rm --network host -it -v "$(pwd)":/RESULTS berryliumsec/petusawo:latest check_if_smb_signing_is_required smb_targets.txt
+docker run --rm --network host -it -v "$(pwd)":/RESULTS berylliumsec/orionops:latest check_if_smb_signing_is_required smb_targets.txt
 ```
 
 ### Exploit "SMB signing not required" via DNS6 poisoning and NTLM relay.
@@ -199,7 +199,7 @@ By default, windows hosts will send a DHCP discovery packet to try to discover D
 mitm6
 
 ```bash
-screen -S mitm6 -d -m  docker run --rm -it --network host -v "$(pwd)":/RESULTS berryliumsec/petusawo:latest \
+screen -S mitm6 -d -m  docker run --rm -it --network host -v "$(pwd)":/RESULTS berylliumsec/orionops:latest \
 start_mitm6 local_network_interface target_domain_name
 ```
 
@@ -209,7 +209,7 @@ screen -r mitm6
 ```
 
 ```bash
-screen -S ipv6_relay -d -m  docker run --rm -it --network host -v "$(pwd)":/RESULTS berryliumsec/petusawo:latest \
+screen -S ipv6_relay -d -m  docker run --rm -it --network host -v "$(pwd)":/RESULTS berylliumsec/orionops:latest \
 start_nltm_relay_ipv6 target_ip_address_or_list_of_ips
 ```
 
@@ -233,7 +233,7 @@ running the `socks` command
 **Output: CLI**
 
     ```bash
-    docker run --rm -it --network host -v "$(pwd)":/RESULTS berryliumsec/petusawo:latest dump_creds DOMAIN/Account@x.x.x.x
+    docker run --rm -it --network host -v "$(pwd)":/RESULTS berylliumsec/orionops:latest dump_creds DOMAIN/Account@x.x.x.x
     ```
 
 - List SMB shares
@@ -241,7 +241,7 @@ running the `socks` command
 **Output: CLI**
 
 ```bash
-    docker run --rm -it --network host -v "$(pwd)":/RESULTS berryliumsec/petusawo:latest list_smb_shares ip_address_of_target DOMAIN\\Account
+    docker run --rm -it --network host -v "$(pwd)":/RESULTS berylliumsec/orionops:latest list_smb_shares ip_address_of_target DOMAIN\\Account
 ```
 
 - Accessing SMB shares
@@ -249,7 +249,7 @@ running the `socks` command
 **Output: CLI**
 
 ```bash
-    docker run --rm -it --network host -v "$(pwd)":/RESULTS berryliumsec/petusawo:latest access_smb \\\\ip_address_of_target\\c$ DOMAIN\\Account
+    docker run --rm -it --network host -v "$(pwd)":/RESULTS berylliumsec/orionops:latest access_smb \\\\ip_address_of_target\\c$ DOMAIN\\Account
 ```
 - Passing hashes for a WMIexec session
 
@@ -259,7 +259,7 @@ NOTE: username must be in lowercase
 
 ```bash
 
-docker run --rm -it --network host -v "$(pwd)":/RESULTS berryliumsec/petusawo:latest pass_hashes_wmi_exec hashes username@x.x.x.x
+docker run --rm -it --network host -v "$(pwd)":/RESULTS berylliumsec/orionops:latest pass_hashes_wmi_exec hashes username@x.x.x.x
 ```
 
 
@@ -269,7 +269,7 @@ docker run --rm -it --network host -v "$(pwd)":/RESULTS berryliumsec/petusawo:la
 
 ```bash
 
-screen -S responder -d -m  docker run --rm -it --network host -v "$(pwd)":/RESULTS berryliumsec/petusawo:latest \
+screen -S responder -d -m  docker run --rm -it --network host -v "$(pwd)":/RESULTS berylliumsec/orionops:latest \
 start_responder local_network_interface
 ```
 
@@ -279,7 +279,7 @@ screen -r responder
 ```
 
 ```bash
-screen -S ipv4_relay -d -m  docker run --rm -it --network host -v "$(pwd)":/RESULTS berryliumsec/petusawo:latest \
+screen -S ipv4_relay -d -m  docker run --rm -it --network host -v "$(pwd)":/RESULTS berylliumsec/orionops:latest \
 start_nltm_relay_ipv4 target_ip_address_or_list_of_ips
 ```
 
@@ -294,7 +294,7 @@ screen -r ipv4_relay
 **Output File Name: smb_null_session_results**
 
 ```bash
-docker run --network host -v "$(pwd)":/RESULTS berryliumsec/petusawo:latest \
+docker run --network host -v "$(pwd)":/RESULTS berylliumsec/orionops:latest \
 check_and_exploit_null_smb_sessions target_ip_address_or_list_of_ips
 ```
 
@@ -303,7 +303,7 @@ check_and_exploit_null_smb_sessions target_ip_address_or_list_of_ips
 **Output: CLI**
 
 ```bash
-docker run --network host -v "$(pwd)":/RESULTS berryliumsec/petusawo:latest \
+docker run --network host -v "$(pwd)":/RESULTS berylliumsec/orionops:latest \
 list_iscsi_targets target_ip_address_or_list_of_target_ips
 ```
 
@@ -312,7 +312,7 @@ list_iscsi_targets target_ip_address_or_list_of_target_ips
 **Output: CLI**
 
 ```bash
-docker run --network host -v "$(pwd)":/RESULTS berryliumsec/petusawo:latest \
+docker run --network host -v "$(pwd)":/RESULTS berylliumsec/orionops:latest \
 test_unauthenticated_iscsi_sessions target_ip_address_or_list_of_target_ips iscsi_target
 ```
 
@@ -322,20 +322,20 @@ test_unauthenticated_iscsi_sessions target_ip_address_or_list_of_target_ips iscs
 
 Change the region as needed, AWS credentials must already be exported into your ENV
 ```bash
-docker run --network host --env-file <(env | grep -E '^AWS_') -v "$(pwd)":/RESULTS berryliumsec/petusawo:latest discover_aws_services us-east-1
+docker run --network host --env-file <(env | grep -E '^AWS_') -v "$(pwd)":/RESULTS berylliumsec/orionops:latest discover_aws_services us-east-1
 ```
 ### Enumerate ciphers a host is using
 
 **Output File Name: supported_ciphers**
 ```bash
-docker run --network host --env-file <(env | grep -E '^AWS_') -v "$(pwd)":/RESULTS berryliumsec/petusawo:latest enumerate_supported_ciphers PORT IPADDRESS_OR_URL
+docker run --network host --env-file <(env | grep -E '^AWS_') -v "$(pwd)":/RESULTS berylliumsec/orionops:latest enumerate_supported_ciphers PORT IPADDRESS_OR_URL
 ```
 
 ### Perform security checks on rdp
 
 **Output File Name: targetipaddress-rdp-check-results**
 ```bash
-docker run --network host -v "$(pwd)":/RESULTS berryliumsec/petusawo:latest check_rdp
+docker run --network host -v "$(pwd)":/RESULTS berylliumsec/orionops:latest check_rdp
 ```
 ### Utilities
 
@@ -344,12 +344,12 @@ Resolve IPs to FQDNS
 ### Extract only hosts that are up:
 
 ```bash
-sudo docker run --init --rm -v "$(pwd)":/RESULTS berryliumsec/petusawo:latest nmap -sn 192.168.1.0/24 | grep -oE "\b([0-9]{1,3}\.){3}[0-9]{1,3}\b"
+sudo docker run --init --rm -v "$(pwd)":/RESULTS berylliumsec/orionops:latest nmap -sn 192.168.1.0/24 | grep -oE "\b([0-9]{1,3}\.){3}[0-9]{1,3}\b"
 ```
 **Output File Name: dns_resolution.log**
 
 ```bash
-docker run --network host -v "$(pwd)":/RESULTS berryliumsec/petusawo:latest \
+docker run --network host -v "$(pwd)":/RESULTS berylliumsec/orionops:latest \
 resolve_fqdn target_ip_address_or_list_of_target_ips 
 ```
 
