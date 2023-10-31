@@ -34,11 +34,13 @@ docker-compose build
 
 ### Before getting started
 
+**IMPORTANT INFORMATION**
+
 Throughout this repository, we refer to "list_of_ips". To pass a list of IPs to any command,
 create a text file in the directory from which the docker command will be run. Ensure that
 you list one IP per line in the text-file, for example.
 
-```
+```file
 198.1.2.220
 198.1.3.221
 ```
@@ -47,7 +49,7 @@ Then you can pass the file name as command line argument to the tool.
 ### Logging
 
 Output from the docker container will either be written to log files your current working directory, or
-sent to stdout and displayed in your CLI
+sent to stdout and displayed in your CLI.
 
 ### Attempt to enumerate Domain Controller anonymously
 **Output File Name: dc_anonymous_enumeration_results**
@@ -164,6 +166,14 @@ docker run --rm --network host -v "$(pwd)":/RESULTS berylliumsec/orionops:latest
 run_web_app_tests target_ip_address_or_list_of_ips optional_proxy_address
 ```
 
+## Exploiting SMB Signing not Required
+
+**Requirements for a successful exploit using this method**
+
+- SMB signing must NOT be required
+- IPv6 must be enabled and ideally un-managed
+- The attacker must be located on the local network of victims
+
 ### Check for IPV6 traffic
 
 **Output: CLI**
@@ -177,6 +187,7 @@ You can view/interact with the above screen with the command:
 ```
 screen -r tshark
 ```
+
 ### Checking if SMB signing is not required
 
 **Output: CLI**
@@ -185,6 +196,12 @@ screen -r tshark
 docker run --rm --network host -it -v "$(pwd)":/RESULTS berylliumsec/orionops:latest check_if_smb_signing_is_required smb_targets.txt
 ```
 
+The above command expects that you have a list of targets on each line in your file like so:
+
+```file
+198.1.2.220
+198.1.3.221
+```
 ### Exploit "SMB signing not required" via DNS6 poisoning and NTLM relay.
 
 **Output: CLI**
@@ -210,7 +227,7 @@ screen -r mitm6
 
 ```bash
 screen -S ipv6_relay -d -m  docker run --rm -it --network host -v "$(pwd)":/RESULTS berylliumsec/orionops:latest \
-start_nltm_relay_ipv6 target_ip_address_or_list_of_ips
+start_ntlm_relay_ipv6 target_ip_address_or_list_of_ips
 ```
 
 You can view/interact with the above screen with the command:

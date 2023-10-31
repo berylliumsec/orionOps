@@ -20,3 +20,5 @@ test_results
 *results
 targets
 network_targets
+targets
+smb_targets.txt
