@@ -12,5 +12,5 @@ if [[ ! -f "/RESULTS/$1" ]]; then
     exit 1
 fi
 
-# Sort the IP addresses
-sort -n -t . -k 1,1 -k 2,2 -k 3,3 -k 4,4 "/RESULTS/$1"
+# Sort the IP addresses and remove duplicates
+sort -n -t . -k 1,1 -k 2,2 -k 3,3 -k 4,4 "/RESULTS/$1" | uniq
