@@ -40,6 +40,7 @@ print_help() {
     echo "  discover_aws_services           : Discover AWS services for a specified region"
     echo "  enumerate_supported_ciphers     : Enumerate supported ciphers on a target port"
     echo "  check_rdp                       : Check the security of an RDP connection"
+    echo "  test_open_relay                 : Check if a SMT Server is Open-Relay"
     echo "  help                            : Display this help message"
 }
 
@@ -103,6 +104,17 @@ case "$1" in
         else
             printf "%s\n" "running scans, output will be written to masscan_raw_results in your current working folder"
             masscan "$3" "$2" 2>&1 | tee -a /RESULTS/masscan_raw_results
+        fi
+    ;;
+    test_open_relay)
+        if [ -f "/RESULTS/$2" ]; then
+            
+            while read -r ip; do
+                printf "%s\n" "testing for open relay, output will be written to open_relay.log in your current working folder"
+                python3 /scripts/python/test_open_relay.py --mail_server "$ip" --sender "$3" --recipient "$4"
+            done < <(grep . "/RESULTS/$2")
+        else
+            python3 /scripts/python/test_open_relay.py --mail_server "$ip" --sender "$3" --recipient "$4"
         fi
     ;;
     ssh_audit)

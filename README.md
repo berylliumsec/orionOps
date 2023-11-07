@@ -348,6 +348,13 @@ docker run --network host --env-file <(env | grep -E '^AWS_') -v "$(pwd)":/RESUL
 docker run --network host --env-file <(env | grep -E '^AWS_') -v "$(pwd)":/RESULTS berylliumsec/orionops:latest enumerate_supported_ciphers PORT IPADDRESS_OR_URL
 ```
 
+### Check if a SMTP server supports open-relay
+
+
+**Output File Name: targetipaddress-rdp-check-results**
+```bash
+docker run --network host -v "$(pwd)":/RESULTS berylliumsec/orionops:latest test_open_relay  IP_ADDRESS_OR_TEXT_CONTAINING_LIST_OF_IPS SENDER_ADDRESS RECIPIENT_ADDRESS
+```
 ### Perform security checks on rdp
 
 **Output File Name: targetipaddress-rdp-check-results**
